@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>StudyMind - AI Study Assistant</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title i {
+            font-size: 28px;
+            color: var(--primary-light);
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Upload Section */
+        .upload-section {
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--glass-border);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--primary-light);
+            background: rgba(74, 103, 65, 0.1);
+        }
+
+        .drop-zone.dragover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(74, 103, 65, 0.3);
+        }
+
+        .drop-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 10px 40px rgba(74, 103, 65, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover .drop-icon {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(74, 103, 65, 0.5);
+        }
+
+        .drop-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .drop-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .file-types {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-type-badge {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-type-badge i {
+            font-size: 14px;
+        }
+
+        .file-type-badge.pdf { color: #E53935; }
+        .file-type-badge.doc { color: #2196F3; }
+        .file-type-badge.ppt { color: #FF9800; }
+        .file-type-badge.img { color: #4CAF50; }
+
+        /* File Preview */
+        .file-preview {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            margin-top: 24px;
+        }
+
+        .file-preview.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .file-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .file-icon.pdf { background: rgba(229, 57, 53, 0.2); color: #E53935; }
+        .file-icon.doc { background: rgba(33, 150, 243, 0.2); color: #2196F3; }
+        .file-icon.ppt { background: rgba(255, 152, 0, 0.2); color: #FF9800; }
+        .file-icon.img { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .file-remove {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(229, 115, 115, 0.2);
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .file-remove:hover {
+            background: rgba(229, 115, 115, 0.3);
+        }
+
+        /* Goal Selection */
+        .goal-section {
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .goal-card {
+            padding: 20px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .goal-card:hover {
+            background: rgba(74, 103, 65, 0.15);
+            border-color: rgba(74, 103, 65, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .goal-card.selected {
+            background: rgba(74, 103, 65, 0.2);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 20px rgba(74, 103, 65, 0.3);
+        }
+
+        .goal-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 12px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: rgba(74, 103, 65, 0.2);
+            color: var(--primary-light);
+            transition: all 0.3s ease;
+        }
+
+        .goal-card.selected .goal-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        .goal-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .goal-desc {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        /* Process Button */
+        .process-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .process-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 103, 65, 0.4);
+        }
+
+        .process-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .process-btn.loading {
+            background: rgba(74, 103, 65, 0.5);
+        }
+
+        .process-btn .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Result Section */
+        .result-section {
+            display: none;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .result-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-title i {
+            font-size: 28px;
+            color: var(--success);
+        }
+
+        .result-title h2 {
+            font-size: 20px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        /* Compendium Content */
+        .compendium-content {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            max-height: 600px;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .compendium-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .compendium-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .compendium-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .compendium-content h1,
+        .compendium-content h2,
+        .compendium-content h3 {
+            color: var(--primary-light);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .compendium-content h1 { font-size: 22px; }
+        .compendium-content h2 { font-size: 18px; }
+        .compendium-content h3 { font-size: 16px; }
+
+        .compendium-content p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .compendium-content ul,
+        .compendium-content ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .compendium-content li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .compendium-content strong {
+            color: var(--text-primary);
+        }
+
+        .compendium-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        /* Flashcards Section */
+        .flashcards-section {
+            margin-top: 30px;
+        }
+
+        .flashcards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .flashcard {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 120px;
+        }
+
+        .flashcard:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .flashcard-front {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .flashcard-back {
+            display: none;
+            font-size: 13px;
+            color: var(--success);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .flashcard.flipped .flashcard-front {
+            color: var(--text-tertiary);
+        }
+
+        .flashcard.flipped .flashcard-back {
+            display: block;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .upload-section {
+                padding: 24px;
+            }
+
+            .drop-zone {
+                padding: 40px 20px;
+            }
+
+            .drop-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+
+            .drop-title {
+                font-size: 18px;
+            }
+
+            .goals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .goal-section {
+                padding: 20px;
+            }
+
+            .result-section {
+                padding: 20px;
+            }
+
+            .result-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .flashcards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compendium-content {
+                padding: 16px;
+                max-height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .goals-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .goal-card {
+                padding: 14px 10px;
+            }
+
+            .goal-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .goal-title {
+                font-size: 12px;
+            }
+
+            .goal-desc {
+                display: none;
+            }
+
+            .file-types {
+                gap: 6px;
+            }
+
+            .file-type-badge {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="menu.html" class="back-btn">
+                <i class="ri-arrow-left-line"></i>
+                Back to Home
+            </a>
+            <div class="header-title">
+                <i class="ri-robot-2-line"></i>
+                <h1>AI Study Assistant</h1>
+            </div>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="upload-section glass">
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-icon">
+                    <i class="ri-upload-cloud-2-line"></i>
+                </div>
+                <h2 class="drop-title">Drop your study materials here</h2>
+                <p class="drop-subtitle">or click to browse files</p>
+                <div class="file-types">
+                    <span class="file-type-badge pdf">
+                        <i class="ri-file-pdf-2-line"></i> PDF
+                    </span>
+                    <span class="file-type-badge doc">
+                        <i class="ri-file-word-2-line"></i> DOCX
+                    </span>
+                    <span class="file-type-badge ppt">
+                        <i class="ri-file-ppt-2-line"></i> PPTX
+                    </span>
+                    <span class="file-type-badge img">
+                        <i class="ri-image-line"></i> Images
+                    </span>
+                </div>
+            </div>
+
+            <!-- File Preview -->
+            <div class="file-preview" id="filePreview">
+                <div class="file-info">
+                    <div class="file-icon" id="fileIcon">
+                        <i class="ri-file-line"></i>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name" id="fileName">filename.pdf</div>
+                        <div class="file-size" id="fileSize">2.4 MB</div>
+                    </div>
+                    <button class="file-remove" onclick="removeFile()">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <input type="file" id="fileInput" hidden accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.heic">
+        </section>
+
+        <!-- Goal Selection -->
+        <section class="goal-section glass">
+            <h3 class="section-title">
+                <i class="ri-focus-3-line"></i>
+                What would you like to create?
+            </h3>
+            <div class="goals-grid">
+                <div class="goal-card selected" data-goal="understand" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-lightbulb-line"></i>
+                    </div>
+                    <div class="goal-title">Understand</div>
+                    <div class="goal-desc">Clear explanations</div>
+                </div>
+                <div class="goal-card" data-goal="summary" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-file-list-2-line"></i>
+                    </div>
+                    <div class="goal-title">Summary</div>
+                    <div class="goal-desc">Key points</div>
+                </div>
+                <div class="goal-card" data-goal="exam" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-graduation-cap-line"></i>
+                    </div>
+                    <div class="goal-title">Exam Prep</div>
+                    <div class="goal-desc">Test ready</div>
+                </div>
+                <div class="goal-card" data-goal="questions" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-question-answer-line"></i>
+                    </div>
+                    <div class="goal-title">Practice</div>
+                    <div class="goal-desc">Quiz questions</div>
+                </div>
+                <div class="goal-card" data-goal="plan" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    <div class="goal-title">Study Plan</div>
+                    <div class="goal-desc">Organized schedule</div>
+                </div>
+                <div class="goal-card" data-goal="review" onclick="selectGoal(this)">
+                    <div class="goal-icon">
+                        <i class="ri-flashlight-line"></i>
+                    </div>
+                    <div class="goal-title">Quick Review</div>
+                    <div class="goal-desc">Flashcards</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Button -->
+        <button class="process-btn" id="processBtn" onclick="processFile()" disabled>
+            <i class="ri-magic-line"></i>
+            Generate with AI
+        </button>
+
+        <!-- Result Section -->
+        <section class="result-section glass" id="resultSection">
+            <div class="result-header">
+                <div class="result-title">
+                    <i class="ri-check-double-line"></i>
+                    <h2>Your Compendium is Ready!</h2>
+                </div>
+                <div class="result-actions">
+                    <button class="action-btn" onclick="copyContent()">
+                        <i class="ri-file-copy-line"></i> Copy
+                    </button>
+                    <button class="action-btn" onclick="downloadContent()">
+                        <i class="ri-download-line"></i> Download
+                    </button>
+                    <button class="action-btn" onclick="saveToLibrary()">
+                        <i class="ri-bookmark-line"></i> Save
+                    </button>
+                </div>
+            </div>
+            
+            <div class="compendium-content" id="compendiumContent">
+                <!-- AI generated content will appear here -->
+            </div>
+
+            <!-- Flashcards -->
+            <div class="flashcards-section" id="flashcardsSection" style="display: none;">
+                <h3 class="section-title">
+                    <i class="ri-stack-line"></i>
+                    Flashcards (Click to reveal)
+                </h3>
+                <div class="flashcards-grid" id="flashcardsGrid">
+                    <!-- Flashcards will be generated here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Configuration
+        const API_URL = 'http://localhost:5500/api';
+        
+        // State
+        let selectedFile = null;
+        let selectedGoal = 'understand';
+        let compendiumData = null;
+
+        // DOM Elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const processBtn = document.getElementById('processBtn');
+        const resultSection = document.getElementById('resultSection');
+
+        // ==================== FILE HANDLING ====================
+
+        // Click to upload
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            const allowedTypes = ['application/pdf', 'application/msword', 
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'image/jpeg', 'image/png', 'image/heic'];
+            
+            const ext = file.name.split('.').pop().toLowerCase();
+            const allowedExts = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'heic'];
+            
+            if (!allowedExts.includes(ext)) {
+                alert('File type not supported. Please upload PDF, DOCX, PPTX, or images.');
+                return;
+            }
+
+            selectedFile = file;
+            showFilePreview(file);
+            processBtn.disabled = false;
+        }
+
+        function showFilePreview(file) {
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const fileIcon = document.getElementById('fileIcon');
+            
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            
+            // Set icon based on file type
+            const ext = file.name.split('.').pop().toLowerCase();
+            let iconClass = 'ri-file-line';
+            let typeClass = '';
+            
+            if (ext === 'pdf') {
+                iconClass = 'ri-file-pdf-2-line';
+                typeClass = 'pdf';
+            } else if (['doc', 'docx'].includes(ext)) {
+                iconClass = 'ri-file-word-2-line';
+                typeClass = 'doc';
+            } else if (['ppt', 'pptx'].includes(ext)) {
+                iconClass = 'ri-file-ppt-2-line';
+                typeClass = 'ppt';
+            } else if (['jpg', 'jpeg', 'png', 'heic'].includes(ext)) {
+                iconClass = 'ri-image-line';
+                typeClass = 'img';
+            }
+            
+            fileIcon.innerHTML = `<i class="${iconClass}"></i>`;
+            fileIcon.className = 'file-icon ' + typeClass;
+            
+            filePreview.classList.add('active');
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            fileInput.value = '';
+            filePreview.classList.remove('active');
+            processBtn.disabled = true;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // ==================== GOAL SELECTION ====================
+
+        function selectGoal(element) {
+            document.querySelectorAll('.goal-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedGoal = element.dataset.goal;
+        }
+
+        // ==================== AI PROCESSING ====================
+
+        async function processFile() {
+            if (!selectedFile) {
+                alert('Please select a file first');
+                return;
+            }
+
+            // Show loading state
+            processBtn.disabled = true;
+            processBtn.classList.add('loading');
+            processBtn.innerHTML = '<div class="spinner"></div> Processing with AI...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('goal', selectedGoal);
+
+                const response = await fetch(`${API_URL}/ai/process`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    compendiumData = data;
+                    showResult(data);
+                } else {
+                    throw new Error(data.error || 'Processing failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error processing file: ' + error.message + '\n\nMake sure the server is running and GEMINI_API_KEY is set.');
+            } finally {
+                processBtn.disabled = false;
+                processBtn.classList.remove('loading');
+                processBtn.innerHTML = '<i class="ri-magic-line"></i> Generate with AI';
+            }
+        }
+
+        function showResult(data) {
+            // Show result section
+            resultSection.classList.add('active');
+            
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Format and display compendium
+            const content = document.getElementById('compendiumContent');
+            content.innerHTML = formatMarkdown(data.compendium);
+
+            // Show flashcards if available
+            if (data.flashcards && data.flashcards.length > 0) {
+                showFlashcards(data.flashcards);
+            }
+        }
+
+        function formatMarkdown(text) {
+            // Simple markdown to HTML conversion
+            return text
+                // Headers
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Lists
+                .replace(/^\- (.*$)/gm, '<li>$1</li>')
+                .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+                // Code
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                // Paragraphs
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                // Wrap in paragraph
+                .replace(/^/, '<p>')
+                .replace(/$/, '</p>');
+        }
+
+        function showFlashcards(flashcards) {
+            const section = document.getElementById('flashcardsSection');
+            const grid = document.getElementById('flashcardsGrid');
+            
+            grid.innerHTML = flashcards.map((card, index) => `
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-front">${card.front}</div>
+                    <div class="flashcard-back">${card.back}</div>
+                </div>
+            `).join('');
+            
+            section.style.display = 'block';
+        }
+
+        function flipCard(element) {
+            element.classList.toggle('flipped');
+        }
+
+        // ==================== ACTIONS ====================
+
+        function copyContent() {
+            const content = document.getElementById('compendiumContent').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function downloadContent() {
+            const content = compendiumData?.compendium || '';
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `studymind-compendium-${Date.now()}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function saveToLibrary() {
+            // TODO: Implement save to library
+            alert('Saved to your library!');
+        }
+    </script>
+</body>
+</html>

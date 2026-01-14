@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Progress</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+            
+            /* Progress colors */
+            --chart-1: #7a9e70;
+            --chart-2: #14919B;
+            --chart-3: #d4e09b;
+            --chart-4: #f4a259;
+            --chart-5: #bc6c8a;
+            --chart-6: #64b5f6;
+            --chart-7: #81c784;
+        }
+
+        i {
+            text-shadow: 0 0 7px currentColor;
+        }
+
+        .nav-item:hover i, .header-btn:hover i {
+            text-shadow: 0 0 12px currentColor;
+            transition: text-shadow 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            margin-bottom: 32px;
+            border-radius: 16px;
+            background: rgba(74, 103, 65, 0.2);
+            border: 1px solid rgba(123, 104, 238, 0.3);
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-greeting {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            padding-left: 12px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(74, 103, 65, 0.4) 0%, rgba(45, 68, 50, 0.4) 100%);
+            color: var(--text-primary);
+            border: 1px solid rgba(123, 104, 238, 0.4);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-left p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .time-filter {
+            display: flex;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .time-filter-btn {
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .time-filter-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .header-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .header-btn i {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* Content Layout */
+        .progress-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 8px;
+        }
+
+        /* Overview Stats */
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .overview-card {
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .overview-card.green::before { background: linear-gradient(90deg, var(--chart-1), var(--chart-3)); }
+        .overview-card.blue::before { background: linear-gradient(90deg, var(--chart-2), var(--chart-6)); }
+        .overview-card.orange::before { background: linear-gradient(90deg, var(--chart-4), #f7b267); }
+        .overview-card.pink::before { background: linear-gradient(90deg, var(--chart-5), #d4a5b9); }
+
+        .overview-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .overview-card.green .overview-icon {
+            background: rgba(122, 158, 112, 0.2);
+            color: var(--chart-1);
+        }
+        .overview-card.blue .overview-icon {
+            background: rgba(20, 145, 155, 0.2);
+            color: var(--chart-2);
+        }
+        .overview-card.orange .overview-icon {
+            background: rgba(244, 162, 89, 0.2);
+            color: var(--chart-4);
+        }
+        .overview-card.pink .overview-icon {
+            background: rgba(188, 108, 138, 0.2);
+            color: var(--chart-5);
+        }
+
+        .overview-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .overview-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .overview-trend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .overview-trend.up { color: var(--success); }
+        .overview-trend.down { color: var(--error); }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Weekly Schedule */
+        .schedule-card {
+            padding: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+        }
+
+        .section-link {
+            font-size: 13px;
+            color: var(--primary-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .section-link:hover {
+            color: var(--accent);
+        }
+
+        /* Heatmap Calendar */
+        .heatmap-container {
+            margin-bottom: 20px;
+        }
+
+        .heatmap-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+
+        .heatmap-month {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .heatmap-day-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+            padding-bottom: 8px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .heatmap-cell.level-0 { background: rgba(255, 255, 255, 0.05); }
+        .heatmap-cell.level-1 { background: rgba(122, 158, 112, 0.3); box-shadow: 0 0 8px rgba(122, 158, 112, 0.2); }
+        .heatmap-cell.level-2 { background: rgba(122, 158, 112, 0.5); box-shadow: 0 0 10px rgba(122, 158, 112, 0.3); }
+        .heatmap-cell.level-3 { background: rgba(122, 158, 112, 0.7); box-shadow: 0 0 12px rgba(122, 158, 112, 0.4); }
+        .heatmap-cell.level-4 { background: var(--chart-1); box-shadow: 0 0 15px rgba(122, 158, 112, 0.5); }
+
+        .heatmap-cell.today {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 15px rgba(212, 224, 155, 0.4);
+        }
+
+        .heatmap-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 28, 21, 0.95);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .heatmap-cell:hover .heatmap-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .heatmap-legend-item {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        /* Time Chart */
+        .time-chart-container {
+            height: 200px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 160px;
+            padding: 0 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 60px;
+        }
+
+        .chart-bar {
+            width: 100%;
+            max-width: 40px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            filter: brightness(1.2);
+            transform: scaleY(1.02);
+        }
+
+        .chart-bar.mon { background: linear-gradient(180deg, var(--chart-1) 0%, rgba(122, 158, 112, 0.5) 100%); }
+        .chart-bar.tue { background: linear-gradient(180deg, var(--chart-2) 0%, rgba(20, 145, 155, 0.5) 100%); }
+        .chart-bar.wed { background: linear-gradient(180deg, var(--chart-3) 0%, rgba(212, 224, 155, 0.5) 100%); }
+        .chart-bar.thu { background: linear-gradient(180deg, var(--chart-4) 0%, rgba(244, 162, 89, 0.5) 100%); }
+        .chart-bar.fri { background: linear-gradient(180deg, var(--chart-5) 0%, rgba(188, 108, 138, 0.5) 100%); }
+        .chart-bar.sat { background: linear-gradient(180deg, var(--chart-6) 0%, rgba(100, 181, 246, 0.5) 100%); }
+        .chart-bar.sun { background: linear-gradient(180deg, var(--chart-7) 0%, rgba(129, 199, 132, 0.5) 100%); }
+
+        .chart-bar-value {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chart-bar:hover .chart-bar-value {
+            opacity: 1;
+        }
+
+        .chart-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Subject Progress */
+        .subjects-card {
+            padding: 24px;
+        }
+
+        .subject-item {
+            margin-bottom: 20px;
+        }
+
+        .subject-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .subject-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subject-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .subject-icon.math { background: rgba(100, 181, 246, 0.2); color: var(--chart-6); }
+        .subject-icon.science { background: rgba(129, 199, 132, 0.2); color: var(--chart-7); }
+        .subject-icon.lang { background: rgba(244, 162, 89, 0.2); color: var(--chart-4); }
+        .subject-icon.history { background: rgba(188, 108, 138, 0.2); color: var(--chart-5); }
+        .subject-icon.cs { background: rgba(122, 158, 112, 0.2); color: var(--chart-1); }
+
+        .subject-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .subject-time {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .subject-percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subject-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .subject-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .subject-fill.math { background: linear-gradient(90deg, var(--chart-6), #90caf9); }
+        .subject-fill.science { background: linear-gradient(90deg, var(--chart-7), #a5d6a7); }
+        .subject-fill.lang { background: linear-gradient(90deg, var(--chart-4), #f7b267); }
+        .subject-fill.history { background: linear-gradient(90deg, var(--chart-5), #d4a5b9); }
+        .subject-fill.cs { background: linear-gradient(90deg, var(--chart-1), var(--chart-3)); }
+
+        /* Achievements Card */
+        .achievements-card {
+            padding: 24px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .achievement-item {
+            text-align: center;
+            padding: 16px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .achievement-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .achievement-item.locked {
+            opacity: 0.5;
+        }
+
+        .achievement-item.locked:hover {
+            transform: none;
+        }
+
+        .achievement-badge {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 10px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            position: relative;
+        }
+
+        .achievement-badge.gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .achievement-badge.silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .achievement-badge.bronze {
+            background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+            box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
+        }
+
+        .achievement-badge.locked-badge {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .achievement-name {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .achievement-desc {
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        /* Streak Card */
+        .streak-card {
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(244, 162, 89, 0.15) 0%, rgba(255, 183, 77, 0.1) 100%);
+            border: 1px solid rgba(244, 162, 89, 0.3);
+        }
+
+        .streak-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .streak-fire {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7c531 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 107, 53, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 107, 53, 0.6); }
+        }
+
+        .streak-info {
+            flex: 1;
+        }
+
+        .streak-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .streak-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .streak-message {
+            font-size: 12px;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Goals Card */
+        .goals-card {
+            padding: 24px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .goal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .goal-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .goal-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--glass-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .goal-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .goal-checkbox i {
+            font-size: 14px;
+            opacity: 0;
+        }
+
+        .goal-checkbox.checked i {
+            opacity: 1;
+        }
+
+        .goal-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .goal-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .goal-item.completed .goal-title {
+            text-decoration: line-through;
+            color: var(--text-tertiary);
+        }
+
+        .goal-meta {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .goal-progress-ring {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .goal-progress-ring circle {
+            fill: none;
+            stroke-width: 3;
+        }
+
+        .goal-progress-ring .bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .goal-progress-ring .progress {
+            stroke: var(--success);
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            z-index: 900;
+        }
+
+        .bottom-nav-container {
+            background: rgba(15, 28, 21, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 35px;
+            margin: 0 30px 20px 30px;
+            height: 63px;
+            padding: 4px 15px;
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .bottom-nav-items {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.5);
+            background: transparent;
+            border: none;
+            position: relative;
+        }
+
+        .bottom-nav-item i {
+            font-size: 26px;
+        }
+
+        .bottom-nav-add {
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(145deg, var(--primary-light) 0%, var(--primary) 50%, var(--primary-dark) 100%);
+            border-radius: 22px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(74, 103, 65, 0.5);
+            margin-top: -30px;
+        }
+
+        .bottom-nav-add i {
+            font-size: 32px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .right-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+
+            .overview-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 0;
+            }
+
+            .main-content {
+                padding: 10px;
+                padding-bottom: 110px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .time-filter {
+                flex: 1;
+            }
+
+            .time-filter-btn {
+                flex: 1;
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .overview-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .overview-card {
+                padding: 16px;
+            }
+
+            .overview-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .overview-value {
+                font-size: 24px;
+            }
+
+            .overview-label {
+                font-size: 11px;
+            }
+
+            .schedule-card, .subjects-card, .achievements-card, .streak-card, .goals-card {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .right-column {
+                grid-template-columns: 1fr;
+            }
+
+            .achievement-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .achievement-badge {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .achievement-name {
+                font-size: 10px;
+            }
+
+            .streak-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .streak-fire {
+                width: 64px;
+                height: 64px;
+                font-size: 32px;
+            }
+
+            .bottom-nav {
+                display: block;
+            }
+
+            .sidebar-overlay {
+                display: block;
+            }
+
+            .heatmap-cell {
+                border-radius: 4px;
+            }
+
+            .heatmap-grid {
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass" id="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="ri-brain-line"></i>
+                </div>
+                <span class="logo-text">StudyMind</span>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">AK</div>
+                <div class="user-info">
+                    <div class="user-greeting">Hello!</div>
+                    <div class="user-name">Alex Kowalski</div>
+                </div>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-label">Menu</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="smoothTransition('menu.html')">
+                        <i class="ri-home-5-line"></i>
+                        <span>Home</span>
+                    </li>
+                    <li class="nav-item" onclick="smoothTransition('library.html')">
+                        <i class="ri-book-3-line"></i>
+                        <span>Library</span>
+                        <span class="nav-badge">12</span>
+                    </li>
+                    <li class="nav-item" onclick="smoothTransition('drop.html')">
+                        <i class="ri-calendar-check-line"></i>
+                        <span>Drop File</span>
+                    </li>
+                    <li class="nav-item active">
+                        <i class="ri-bar-chart-box-line"></i>
+                        <span>Progress</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="nav-section">
+                <div class="nav-label">Account</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="smoothTransition('settings.html')">
+                        <i class="ri-settings-4-line"></i>
+                        <span>Settings</span>
+                    </li>
+                    <li class="nav-item" onclick="smoothTransition('support.html')">
+                        <i class="ri-question-line"></i>
+                        <span>Help</span>
+                    </li>
+                    <li class="nav-item" onclick="smoothTransition('logout.html')">
+                        <i class="ri-logout-box-r-line"></i>
+                        <span>Logout</span>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header glass animate-in">
+                <div class="header-left">
+                    <h1>Your Progress</h1>
+                    <p>Track your learning journey and achievements</p>
+                </div>
+                <div class="header-right">
+                    <div class="time-filter">
+                        <button class="time-filter-btn" onclick="setTimeFilter(this, 'week')">Week</button>
+                        <button class="time-filter-btn active" onclick="setTimeFilter(this, 'month')">Month</button>
+                        <button class="time-filter-btn" onclick="setTimeFilter(this, 'year')">Year</button>
+                    </div>
+                    <div class="header-btn" onclick="toggleSidebar()">
+                        <i class="ri-menu-line"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Progress Content -->
+            <div class="progress-content">
+                <!-- Overview Stats -->
+                <div class="overview-stats">
+                    <div class="overview-card glass green animate-in delay-1">
+                        <div class="overview-icon">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <div class="overview-value">47.5h</div>
+                        <div class="overview-label">Total Study Time</div>
+                        <div class="overview-trend up">
+                            <i class="ri-arrow-up-s-line"></i> 12% vs last month
+                        </div>
+                    </div>
+                    <div class="overview-card glass blue animate-in delay-2">
+                        <div class="overview-icon">
+                            <i class="ri-book-open-line"></i>
+                        </div>
+                        <div class="overview-value">156</div>
+                        <div class="overview-label">Pages Reviewed</div>
+                        <div class="overview-trend up">
+                            <i class="ri-arrow-up-s-line"></i> 28 this week
+                        </div>
+                    </div>
+                    <div class="overview-card glass orange animate-in delay-3">
+                        <div class="overview-icon">
+                            <i class="ri-checkbox-circle-line"></i>
+                        </div>
+                        <div class="overview-value">89%</div>
+                        <div class="overview-label">Completion Rate</div>
+                        <div class="overview-trend up">
+                            <i class="ri-arrow-up-s-line"></i> 5% improvement
+                        </div>
+                    </div>
+                    <div class="overview-card glass pink animate-in delay-4">
+                        <div class="overview-icon">
+                            <i class="ri-medal-line"></i>
+                        </div>
+                        <div class="overview-value">12</div>
+                        <div class="overview-label">Achievements</div>
+                        <div class="overview-trend up">
+                            <i class="ri-arrow-up-s-line"></i> 3 new unlocked
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="main-grid">
+                    <!-- Left Column -->
+                    <div class="left-column">
+                        <!-- Weekly Schedule/Heatmap -->
+                        <div class="schedule-card glass animate-in delay-5">
+                            <div class="section-header">
+                                <h3 class="section-title">
+                                    <i class="ri-calendar-2-line"></i>
+                                    Study Activity
+                                </h3>
+                                <span class="section-link">
+                                    View Details <i class="ri-arrow-right-s-line"></i>
+                                </span>
+                            </div>
+
+                            <!-- Activity Heatmap -->
+                            <div class="heatmap-container">
+                                <div class="heatmap-header">
+                                    <span class="heatmap-month">December</span>
+                                    <span class="heatmap-month">January</span>
+                                </div>
+                                <div class="heatmap-grid" id="heatmapGrid">
+                                    <!-- Days labels -->
+                                    <div class="heatmap-day-label">Mon</div>
+                                    <div class="heatmap-day-label">Tue</div>
+                                    <div class="heatmap-day-label">Wed</div>
+                                    <div class="heatmap-day-label">Thu</div>
+                                    <div class="heatmap-day-label">Fri</div>
+                                    <div class="heatmap-day-label">Sat</div>
+                                    <div class="heatmap-day-label">Sun</div>
+                                    <!-- Cells will be generated by JS -->
+                                </div>
+                                <div class="heatmap-legend">
+                                    <span>Less</span>
+                                    <div class="heatmap-legend-item level-0" style="background: rgba(255, 255, 255, 0.05);"></div>
+                                    <div class="heatmap-legend-item level-1" style="background: rgba(122, 158, 112, 0.3);"></div>
+                                    <div class="heatmap-legend-item level-2" style="background: rgba(122, 158, 112, 0.5);"></div>
+                                    <div class="heatmap-legend-item level-3" style="background: rgba(122, 158, 112, 0.7);"></div>
+                                    <div class="heatmap-legend-item level-4" style="background: var(--chart-1);"></div>
+                                    <span>More</span>
+                                </div>
+                            </div>
+
+                            <!-- Time Chart -->
+                            <div class="section-header" style="margin-top: 20px;">
+                                <h3 class="section-title">
+                                    <i class="ri-bar-chart-2-line"></i>
+                                    This Week's Hours
+                                </h3>
+                            </div>
+                            <div class="time-chart-container">
+                                <div class="chart-bars">
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar mon" style="height: 65%;">
+                                            <span class="chart-bar-value">2.5h</span>
+                                        </div>
+                                        <span class="chart-label">Mon</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar tue" style="height: 85%;">
+                                            <span class="chart-bar-value">3.2h</span>
+                                        </div>
+                                        <span class="chart-label">Tue</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar wed" style="height: 45%;">
+                                            <span class="chart-bar-value">1.8h</span>
+                                        </div>
+                                        <span class="chart-label">Wed</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar thu" style="height: 100%;">
+                                            <span class="chart-bar-value">4.0h</span>
+                                        </div>
+                                        <span class="chart-label">Thu</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar fri" style="height: 55%;">
+                                            <span class="chart-bar-value">2.1h</span>
+                                        </div>
+                                        <span class="chart-label">Fri</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar sat" style="height: 75%;">
+                                            <span class="chart-bar-value">2.8h</span>
+                                        </div>
+                                        <span class="chart-label">Sat</span>
+                                    </div>
+                                    <div class="chart-bar-wrapper">
+                                        <div class="chart-bar sun" style="height: 30%;">
+                                            <span class="chart-bar-value">1.1h</span>
+                                        </div>
+                                        <span class="chart-label">Sun</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subject Progress -->
+                        <div class="subjects-card glass animate-in delay-6">
+                            <div class="section-header">
+                                <h3 class="section-title">
+                                    <i class="ri-pie-chart-2-line"></i>
+                                    Subject Progress
+                                </h3>
+                                <span class="section-link">
+                                    All Subjects <i class="ri-arrow-right-s-line"></i>
+                                </span>
+                            </div>
+
+                            <div class="subject-item">
+                                <div class="subject-header">
+                                    <div class="subject-info">
+                                        <div class="subject-icon cs">
+                                            <i class="ri-code-s-slash-line"></i>
+                                        </div>
+                                        <div>
+                                            <div class="subject-name">Computer Science</div>
+                                            <div class="subject-time">18.5h studied</div>
+                                        </div>
+                                    </div>
+                                    <span class="subject-percent">92%</span>
+                                </div>
+                                <div class="subject-bar">
+                                    <div class="subject-fill cs" style="width: 92%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="subject-item">
+                                <div class="subject-header">
+                                    <div class="subject-info">
+                                        <div class="subject-icon math">
+                                            <i class="ri-calculator-line"></i>
+                                        </div>
+                                        <div>
+                                            <div class="subject-name">Mathematics</div>
+                                            <div class="subject-time">12.3h studied</div>
+                                        </div>
+                                    </div>
+                                    <span class="subject-percent">78%</span>
+                                </div>
+                                <div class="subject-bar">
+                                    <div class="subject-fill math" style="width: 78%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="subject-item">
+                                <div class="subject-header">
+                                    <div class="subject-info">
+                                        <div class="subject-icon science">
+                                            <i class="ri-flask-line"></i>
+                                        </div>
+                                        <div>
+                                            <div class="subject-name">Physics</div>
+                                            <div class="subject-time">8.7h studied</div>
+                                        </div>
+                                    </div>
+                                    <span class="subject-percent">65%</span>
+                                </div>
+                                <div class="subject-bar">
+                                    <div class="subject-fill science" style="width: 65%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="subject-item">
+                                <div class="subject-header">
+                                    <div class="subject-info">
+                                        <div class="subject-icon lang">
+                                            <i class="ri-translate-2"></i>
+                                        </div>
+                                        <div>
+                                            <div class="subject-name">Statistics</div>
+                                            <div class="subject-time">5.2h studied</div>
+                                        </div>
+                                    </div>
+                                    <span class="subject-percent">45%</span>
+                                </div>
+                                <div class="subject-bar">
+                                    <div class="subject-fill lang" style="width: 45%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="subject-item">
+                                <div class="subject-header">
+                                    <div class="subject-info">
+                                        <div class="subject-icon history">
+                                            <i class="ri-history-line"></i>
+                                        </div>
+                                        <div>
+                                            <div class="subject-name">Data Structures</div>
+                                            <div class="subject-time">2.8h studied</div>
+                                        </div>
+                                    </div>
+                                    <span class="subject-percent">32%</span>
+                                </div>
+                                <div class="subject-bar">
+                                    <div class="subject-fill history" style="width: 32%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="right-column">
+                        <!-- Streak Card -->
+                        <div class="streak-card glass animate-in delay-3">
+                            <div class="section-header">
+                                <h3 class="section-title">
+                                    <i class="ri-fire-line"></i>
+                                    Current Streak
+                                </h3>
+                            </div>
+                            <div class="streak-content">
+                                <div class="streak-fire">
+                                    🔥
+                                </div>
+                                <div class="streak-info">
+                                    <div class="streak-value">7 Days</div>
+                                    <div class="streak-label">Your best: 14 days</div>
+                                    <div class="streak-message">
+                                        <i class="ri-trophy-line"></i>
+                                        Keep going to beat your record!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievements Card -->
+                        <div class="achievements-card glass animate-in delay-4">
+                            <div class="section-header">
+                                <h3 class="section-title">
+                                    <i class="ri-award-line"></i>
+                                    Achievements
+                                </h3>
+                                <span class="section-link">
+                                    View All <i class="ri-arrow-right-s-line"></i>
+                                </span>
+                            </div>
+                            <div class="achievement-grid">
+                                <div class="achievement-item">
+                                    <div class="achievement-badge gold">
+                                        🏆
+                                    </div>
+                                    <div class="achievement-name">First Steps</div>
+                                    <div class="achievement-desc">Complete 1st session</div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-badge gold">
+                                        📚
+                                    </div>
+                                    <div class="achievement-name">Bookworm</div>
+                                    <div class="achievement-desc">Read 100 pages</div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-badge silver">
+                                        ⏰
+                                    </div>
+                                    <div class="achievement-name">Early Bird</div>
+                                    <div class="achievement-desc">Study before 8 AM</div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-badge bronze">
+                                        🎯
+                                    </div>
+                                    <div class="achievement-name">Focused</div>
+                                    <div class="achievement-desc">2h without break</div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-badge gold">
+                                        🔥
+                                    </div>
+                                    <div class="achievement-name">On Fire</div>
+                                    <div class="achievement-desc">7 day streak</div>
+                                </div>
+                                <div class="achievement-item locked">
+                                    <div class="achievement-badge locked-badge">
+                                        🔒
+                                    </div>
+                                    <div class="achievement-name">Master</div>
+                                    <div class="achievement-desc">100h total</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Goals -->
+                        <div class="goals-card glass animate-in delay-5">
+                            <div class="section-header">
+                                <h3 class="section-title">
+                                    <i class="ri-flag-line"></i>
+                                    Weekly Goals
+                                </h3>
+                                <span class="section-link">
+                                    Edit <i class="ri-pencil-line"></i>
+                                </span>
+                            </div>
+
+                            <div class="goal-item completed" onclick="toggleGoal(this)">
+                                <div class="goal-checkbox checked">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                                <div class="goal-content">
+                                    <div class="goal-title">Complete ML Chapter 5</div>
+                                    <div class="goal-meta">
+                                        <i class="ri-book-line"></i>
+                                        <span>24 pages • Done</span>
+                                    </div>
+                                </div>
+                                <svg class="goal-progress-ring" viewBox="0 0 40 40">
+                                    <circle class="bg" cx="20" cy="20" r="17"></circle>
+                                    <circle class="progress" cx="20" cy="20" r="17" 
+                                        stroke-dasharray="107" stroke-dashoffset="0"></circle>
+                                </svg>
+                            </div>
+
+                            <div class="goal-item" onclick="toggleGoal(this)">
+                                <div class="goal-checkbox">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                                <div class="goal-content">
+                                    <div class="goal-title">Practice Statistics Problems</div>
+                                    <div class="goal-meta">
+                                        <i class="ri-calculator-line"></i>
+                                        <span>15/20 problems</span>
+                                    </div>
+                                </div>
+                                <svg class="goal-progress-ring" viewBox="0 0 40 40">
+                                    <circle class="bg" cx="20" cy="20" r="17"></circle>
+                                    <circle class="progress" cx="20" cy="20" r="17" 
+                                        stroke-dasharray="107" stroke-dashoffset="27"></circle>
+                                </svg>
+                            </div>
+
+                            <div class="goal-item" onclick="toggleGoal(this)">
+                                <div class="goal-checkbox">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                                <div class="goal-content">
+                                    <div class="goal-title">Review Data Structures</div>
+                                    <div class="goal-meta">
+                                        <i class="ri-git-branch-line"></i>
+                                        <span>3/5 topics</span>
+                                    </div>
+                                </div>
+                                <svg class="goal-progress-ring" viewBox="0 0 40 40">
+                                    <circle class="bg" cx="20" cy="20" r="17"></circle>
+                                    <circle class="progress" cx="20" cy="20" r="17" 
+                                        stroke-dasharray="107" stroke-dashoffset="43"></circle>
+                                </svg>
+                            </div>
+
+                            <div class="goal-item" onclick="toggleGoal(this)">
+                                <div class="goal-checkbox">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                                <div class="goal-content">
+                                    <div class="goal-title">Study 20 hours</div>
+                                    <div class="goal-meta">
+                                        <i class="ri-time-line"></i>
+                                        <span>17.5/20 hours</span>
+                                    </div>
+                                </div>
+                                <svg class="goal-progress-ring" viewBox="0 0 40 40">
+                                    <circle class="bg" cx="20" cy="20" r="17"></circle>
+                                    <circle class="progress" cx="20" cy="20" r="17" 
+                                        stroke-dasharray="107" stroke-dashoffset="13"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-container">
+            <div class="bottom-nav-items">
+                <div class="bottom-nav-item" onclick="toggleSidebar()">
+                    <i class="ri-menu-2-line"></i>
+                </div>
+                <div class="bottom-nav-item bottom-nav-add" onclick="smoothTransition('drop.html')">
+                    <i class="ri-add-line"></i>
+                </div>
+                <div class="bottom-nav-item" onclick="smoothTransition('menu.html')">
+                    <i class="ri-home-5-line"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Smooth page transitions
+        function smoothTransition(url) {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // Sidebar functions
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+
+        // Time filter
+        function setTimeFilter(btn, period) {
+            document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Here you would update the data based on the selected period
+            console.log('Filter set to:', period);
+        }
+
+        // Toggle goal completion
+        function toggleGoal(element) {
+            element.classList.toggle('completed');
+            const checkbox = element.querySelector('.goal-checkbox');
+            checkbox.classList.toggle('checked');
+        }
+
+        // Generate heatmap
+        function generateHeatmap() {
+            const grid = document.getElementById('heatmapGrid');
+            const existingCells = grid.querySelectorAll('.heatmap-cell');
+            existingCells.forEach(cell => cell.remove());
+
+            // Generate 6 weeks of data (42 days)
+            const today = new Date();
+            const startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 41);
+
+            for (let i = 0; i < 42; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'heatmap-cell';
+                
+                // Random level for demo
+                const level = Math.floor(Math.random() * 5);
+                cell.classList.add('level-' + level);
+
+                // Check if today
+                const cellDate = new Date(startDate);
+                cellDate.setDate(cellDate.getDate() + i);
+                
+                if (cellDate.toDateString() === today.toDateString()) {
+                    cell.classList.add('today');
+                }
+
+                // Add tooltip
+                const hours = level === 0 ? 0 : (level * 0.8 + Math.random() * 1.5).toFixed(1);
+                const dateStr = cellDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                
+                const tooltip = document.createElement('div');
+                tooltip.className = 'heatmap-tooltip';
+                tooltip.innerHTML = `<strong>${dateStr}</strong><br>${hours}h studied`;
+                cell.appendChild(tooltip);
+
+                grid.appendChild(cell);
+            }
+        }
+
+        // Swipe gestures for sidebar
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diffX = touchEndX - touchStartX;
+            
+            if (diffX > 80 && touchStartX < 50) {
+                document.getElementById('sidebar').classList.add('open');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+            if (diffX < -80) {
+                closeSidebar();
+            }
+        });
+
+        // Keyboard shortcut
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        // Animate progress bars on load
+        function animateProgressBars() {
+            const bars = document.querySelectorAll('.subject-fill');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+
+            // Animate chart bars
+            const chartBars = document.querySelectorAll('.chart-bar');
+            chartBars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 100 + index * 100);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            generateHeatmap();
+            setTimeout(animateProgressBars, 300);
+        });
+    </script>
+</body>
+</html>

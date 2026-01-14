@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Library</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        i {
+            text-shadow: 0 0 7px currentColor;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* App Container */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        .back-btn i {
+            font-size: 20px;
+        }
+
+        .page-title-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .page-title-section p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        .header-btn i {
+            font-size: 20px;
+        }
+
+        /* Search & Filter Bar */
+        .search-filter-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box-large {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box-large:focus-within {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 20px rgba(122, 158, 112, 0.2);
+        }
+
+        .search-box-large input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .search-box-large input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-box-large i {
+            color: var(--text-tertiary);
+            font-size: 18px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .filter-tab {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 103, 65, 0.3);
+        }
+
+        .filter-tab .count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .filter-tab.active .count {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-mini-card {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-mini-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .stat-mini-icon.chats {
+            background: rgba(74, 103, 65, 0.25);
+            color: var(--primary-light);
+            box-shadow: 0 0 15px rgba(74, 103, 65, 0.3);
+        }
+
+        .stat-mini-icon.files {
+            background: rgba(33, 150, 243, 0.2);
+            color: #64b5f6;
+            box-shadow: 0 0 15px rgba(33, 150, 243, 0.25);
+        }
+
+        .stat-mini-icon.summaries {
+            background: rgba(212, 224, 155, 0.2);
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(212, 224, 155, 0.25);
+        }
+
+        .stat-mini-icon.flashcards {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ffb74d;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.25);
+        }
+
+        .stat-mini-info h4 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-mini-info p {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* Main Content Grid */
+        .library-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+        }
+
+        /* Chat History Section */
+        .chat-history-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+        }
+
+        .section-action {
+            font-size: 13px;
+            color: var(--primary-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .section-action:hover {
+            color: var(--accent);
+        }
+
+        /* Chat Cards */
+        .chat-card {
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary-light) 0%, var(--accent) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chat-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(4px);
+        }
+
+        .chat-card:hover::before {
+            opacity: 1;
+        }
+
+        .chat-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            box-shadow: 0 0 20px rgba(74, 103, 65, 0.3);
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .chat-title-section {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .chat-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-meta-item i {
+            font-size: 14px;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chat-card:hover .chat-actions {
+            opacity: 1;
+        }
+
+        .chat-action-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chat-action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+
+        .chat-action-btn.delete:hover {
+            background: rgba(229, 115, 115, 0.2);
+            color: var(--error);
+        }
+
+        .chat-preview {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .chat-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chat-tag {
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chat-tag i {
+            font-size: 12px;
+        }
+
+        .chat-tag.pdf {
+            background: rgba(229, 57, 53, 0.15);
+            color: #ef5350;
+        }
+
+        .chat-tag.doc {
+            background: rgba(33, 150, 243, 0.15);
+            color: #64b5f6;
+        }
+
+        .chat-tag.summary {
+            background: rgba(212, 224, 155, 0.15);
+            color: var(--accent);
+        }
+
+        .chat-tag.quiz {
+            background: rgba(255, 152, 0, 0.15);
+            color: #ffb74d;
+        }
+
+        /* Date Divider */
+        .date-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 8px 0;
+        }
+
+        .date-divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .date-divider-text {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Right Sidebar */
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Files Section */
+        .files-section {
+            padding: 20px;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .file-card {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .file-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--glass-border);
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .file-icon.pdf {
+            background: rgba(229, 57, 53, 0.2);
+            color: #E53935;
+            box-shadow: 0 0 12px rgba(229, 57, 53, 0.25);
+        }
+
+        .file-icon.doc {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            box-shadow: 0 0 12px rgba(33, 150, 243, 0.25);
+        }
+
+        .file-icon.ppt {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+            box-shadow: 0 0 12px rgba(255, 152, 0, 0.25);
+        }
+
+        .file-icon.img {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            box-shadow: 0 0 12px rgba(76, 175, 80, 0.25);
+        }
+
+        .file-name {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-size {
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        /* Quick Access Section */
+        .quick-access-section {
+            padding: 20px;
+        }
+
+        .quick-access-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .quick-access-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-access-item:hover {
+            background: rgba(74, 103, 65, 0.15);
+        }
+
+        .quick-access-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(74, 103, 65, 0.2);
+            color: var(--primary-light);
+        }
+
+        .quick-access-info {
+            flex: 1;
+        }
+
+        .quick-access-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .quick-access-info p {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .quick-access-arrow {
+            color: var(--text-tertiary);
+            font-size: 18px;
+        }
+
+        /* Pinned Section */
+        .pinned-section {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(74, 103, 65, 0.15) 0%, rgba(212, 224, 155, 0.08) 100%);
+            border: 1px solid rgba(74, 103, 65, 0.25);
+        }
+
+        .pinned-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pinned-item:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .pinned-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .pinned-info {
+            flex: 1;
+        }
+
+        .pinned-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .pinned-info p {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .pin-badge {
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-desc {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 103, 65, 0.4);
+        }
+
+        /* Load More */
+        .load-more {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .load-more-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        /* Mobile Styles */
+        @media (max-width: 1100px) {
+            .library-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-right {
+                display: none;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 16px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .page-title-section h1 {
+                font-size: 24px;
+            }
+
+            .search-filter-bar {
+                flex-direction: column;
+            }
+
+            .filter-tabs {
+                overflow-x: auto;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .filter-tab {
+                white-space: nowrap;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-mini-card {
+                padding: 14px;
+            }
+
+            .stat-mini-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .stat-mini-info h4 {
+                font-size: 18px;
+            }
+
+            .chat-card {
+                padding: 16px;
+            }
+
+            .chat-icon-wrapper {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+
+            .chat-actions {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-mini-card {
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+
+            .chat-card-header {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .chat-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .filter-tabs {
+                padding: 4px;
+            }
+
+            .filter-tab {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn" onclick="smoothTransition('menu.html'); return false;">
+                    <i class="ri-arrow-left-s-line"></i>
+                </a>
+                <div class="page-title-section">
+                    <h1>My Library</h1>
+                    <p>Your AI conversations and study materials</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" title="Sort">
+                    <i class="ri-sort-desc"></i>
+                </button>
+                <button class="header-btn" title="Grid View">
+                    <i class="ri-layout-grid-line"></i>
+                </button>
+                <button class="header-btn" title="Settings">
+                    <i class="ri-settings-3-line"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search & Filter Bar -->
+        <div class="search-filter-bar animate-in">
+            <div class="search-box-large">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="Search conversations, files, summaries..." id="librarySearch">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    All <span class="count">24</span>
+                </button>
+                <button class="filter-tab" data-filter="chats">
+                    <i class="ri-chat-3-line"></i> Chats <span class="count">12</span>
+                </button>
+                <button class="filter-tab" data-filter="files">
+                    <i class="ri-file-3-line"></i> Files <span class="count">8</span>
+                </button>
+                <button class="filter-tab" data-filter="summaries">
+                    <i class="ri-file-list-2-line"></i> Summaries <span class="count">4</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-mini-card glass animate-in delay-1">
+                <div class="stat-mini-icon chats">
+                    <i class="ri-chat-3-line"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h4>12</h4>
+                    <p>AI Conversations</p>
+                </div>
+            </div>
+            <div class="stat-mini-card glass animate-in delay-2">
+                <div class="stat-mini-icon files">
+                    <i class="ri-file-3-line"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h4>24</h4>
+                    <p>Files Uploaded</p>
+                </div>
+            </div>
+            <div class="stat-mini-card glass animate-in delay-3">
+                <div class="stat-mini-icon summaries">
+                    <i class="ri-file-list-2-line"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h4>8</h4>
+                    <p>Summaries Created</p>
+                </div>
+            </div>
+            <div class="stat-mini-card glass animate-in delay-4">
+                <div class="stat-mini-icon flashcards">
+                    <i class="ri-stack-line"></i>
+                </div>
+                <div class="stat-mini-info">
+                    <h4>156</h4>
+                    <p>Flashcards</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="library-grid">
+            <!-- Chat History Section -->
+            <div class="chat-history-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <i class="ri-message-3-line"></i>
+                        Recent Conversations
+                    </h3>
+                    <span class="section-action">
+                        Export All <i class="ri-download-2-line"></i>
+                    </span>
+                </div>
+
+                <!-- Today -->
+                <div class="date-divider">
+                    <span class="date-divider-text">Today</span>
+                    <div class="date-divider-line"></div>
+                </div>
+
+                <div class="chat-card glass animate-in delay-1">
+                    <div class="chat-card-header">
+                        <div class="chat-icon-wrapper">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="chat-title-section">
+                            <h4 class="chat-title">Machine Learning Chapter 5 - Deep Dive</h4>
+                            <div class="chat-meta">
+                                <span class="chat-meta-item">
+                                    <i class="ri-time-line"></i> 2 hours ago
+                                </span>
+                                <span class="chat-meta-item">
+                                    <i class="ri-message-2-line"></i> 24 messages
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" title="Pin">
+                                <i class="ri-pushpin-line"></i>
+                            </button>
+                            <button class="chat-action-btn" title="Share">
+                                <i class="ri-share-line"></i>
+                            </button>
+                            <button class="chat-action-btn delete" title="Delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="chat-preview">
+                        We discussed neural network architectures, backpropagation algorithms, and gradient descent optimization. The AI helped explain complex concepts with visual examples...
+                    </p>
+                    <div class="chat-tags">
+                        <span class="chat-tag pdf"><i class="ri-file-pdf-2-line"></i> ML_Chapter5.pdf</span>
+                        <span class="chat-tag summary"><i class="ri-file-list-2-line"></i> Summary created</span>
+                        <span class="chat-tag quiz"><i class="ri-question-line"></i> 15 flashcards</span>
+                    </div>
+                </div>
+
+                <div class="chat-card glass animate-in delay-2">
+                    <div class="chat-card-header">
+                        <div class="chat-icon-wrapper">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="chat-title-section">
+                            <h4 class="chat-title">Statistics Regression Analysis Help</h4>
+                            <div class="chat-meta">
+                                <span class="chat-meta-item">
+                                    <i class="ri-time-line"></i> 5 hours ago
+                                </span>
+                                <span class="chat-meta-item">
+                                    <i class="ri-message-2-line"></i> 18 messages
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" title="Pin">
+                                <i class="ri-pushpin-line"></i>
+                            </button>
+                            <button class="chat-action-btn" title="Share">
+                                <i class="ri-share-line"></i>
+                            </button>
+                            <button class="chat-action-btn delete" title="Delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="chat-preview">
+                        Linear regression, multiple regression, and R-squared values explained. Practice problems solved with step-by-step guidance...
+                    </p>
+                    <div class="chat-tags">
+                        <span class="chat-tag doc"><i class="ri-file-ppt-2-line"></i> Stats_Week8.pptx</span>
+                        <span class="chat-tag summary"><i class="ri-file-list-2-line"></i> Summary created</span>
+                    </div>
+                </div>
+
+                <!-- Yesterday -->
+                <div class="date-divider">
+                    <span class="date-divider-text">Yesterday</span>
+                    <div class="date-divider-line"></div>
+                </div>
+
+                <div class="chat-card glass animate-in delay-3">
+                    <div class="chat-card-header">
+                        <div class="chat-icon-wrapper">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="chat-title-section">
+                            <h4 class="chat-title">Data Structures - Binary Trees</h4>
+                            <div class="chat-meta">
+                                <span class="chat-meta-item">
+                                    <i class="ri-time-line"></i> Yesterday
+                                </span>
+                                <span class="chat-meta-item">
+                                    <i class="ri-message-2-line"></i> 32 messages
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" title="Pin">
+                                <i class="ri-pushpin-line"></i>
+                            </button>
+                            <button class="chat-action-btn" title="Share">
+                                <i class="ri-share-line"></i>
+                            </button>
+                            <button class="chat-action-btn delete" title="Delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="chat-preview">
+                        Binary search trees, AVL trees, and tree traversal algorithms. Implemented BFS and DFS with code examples in Python...
+                    </p>
+                    <div class="chat-tags">
+                        <span class="chat-tag doc"><i class="ri-file-word-2-line"></i> DataStructures.docx</span>
+                        <span class="chat-tag quiz"><i class="ri-question-line"></i> 20 flashcards</span>
+                    </div>
+                </div>
+
+                <div class="chat-card glass animate-in delay-4">
+                    <div class="chat-card-header">
+                        <div class="chat-icon-wrapper">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="chat-title-section">
+                            <h4 class="chat-title">Calculus Integration Techniques</h4>
+                            <div class="chat-meta">
+                                <span class="chat-meta-item">
+                                    <i class="ri-time-line"></i> Yesterday
+                                </span>
+                                <span class="chat-meta-item">
+                                    <i class="ri-message-2-line"></i> 15 messages
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" title="Pin">
+                                <i class="ri-pushpin-line"></i>
+                            </button>
+                            <button class="chat-action-btn" title="Share">
+                                <i class="ri-share-line"></i>
+                            </button>
+                            <button class="chat-action-btn delete" title="Delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="chat-preview">
+                        Integration by parts, substitution method, and partial fractions. Solved 10 practice problems with detailed explanations...
+                    </p>
+                    <div class="chat-tags">
+                        <span class="chat-tag pdf"><i class="ri-image-line"></i> Calculus_Notes.jpg</span>
+                    </div>
+                </div>
+
+                <!-- This Week -->
+                <div class="date-divider">
+                    <span class="date-divider-text">This Week</span>
+                    <div class="date-divider-line"></div>
+                </div>
+
+                <div class="chat-card glass">
+                    <div class="chat-card-header">
+                        <div class="chat-icon-wrapper">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="chat-title-section">
+                            <h4 class="chat-title">Physics Exam Preparation</h4>
+                            <div class="chat-meta">
+                                <span class="chat-meta-item">
+                                    <i class="ri-time-line"></i> 3 days ago
+                                </span>
+                                <span class="chat-meta-item">
+                                    <i class="ri-message-2-line"></i> 45 messages
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" title="Pin">
+                                <i class="ri-pushpin-line"></i>
+                            </button>
+                            <button class="chat-action-btn" title="Share">
+                                <i class="ri-share-line"></i>
+                            </button>
+                            <button class="chat-action-btn delete" title="Delete">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="chat-preview">
+                        Comprehensive review of mechanics, thermodynamics, and electromagnetism. Created a full study plan for the upcoming exam...
+                    </p>
+                    <div class="chat-tags">
+                        <span class="chat-tag pdf"><i class="ri-file-pdf-2-line"></i> Physics_All.pdf</span>
+                        <span class="chat-tag summary"><i class="ri-file-list-2-line"></i> Summary created</span>
+                        <span class="chat-tag quiz"><i class="ri-question-line"></i> 50 flashcards</span>
+                    </div>
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more">
+                    <button class="load-more-btn">
+                        <i class="ri-refresh-line"></i>
+                        Load More Conversations
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar-right">
+                <!-- Pinned Section -->
+                <div class="pinned-section glass animate-in delay-1">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="ri-pushpin-2-line"></i>
+                            Pinned
+                        </h3>
+                    </div>
+                    <div class="pinned-item">
+                        <div class="pinned-icon">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="pinned-info">
+                            <h4>Final Exam Study Plan</h4>
+                            <p>Created 1 week ago</p>
+                        </div>
+                        <i class="ri-pushpin-fill pin-badge"></i>
+                    </div>
+                    <div class="pinned-item">
+                        <div class="pinned-icon">
+                            <i class="ri-file-list-2-line"></i>
+                        </div>
+                        <div class="pinned-info">
+                            <h4>ML Complete Summary</h4>
+                            <p>15 pages • PDF</p>
+                        </div>
+                        <i class="ri-pushpin-fill pin-badge"></i>
+                    </div>
+                </div>
+
+                <!-- Recent Files -->
+                <div class="files-section glass animate-in delay-2">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="ri-folder-3-line"></i>
+                            Recent Files
+                        </h3>
+                        <span class="section-action">View All</span>
+                    </div>
+                    <div class="files-grid">
+                        <div class="file-card">
+                            <div class="file-icon pdf">
+                                <i class="ri-file-pdf-2-line"></i>
+                            </div>
+                            <div class="file-name">ML_Chapter5.pdf</div>
+                            <div class="file-size">2.4 MB</div>
+                        </div>
+                        <div class="file-card">
+                            <div class="file-icon doc">
+                                <i class="ri-file-word-2-line"></i>
+                            </div>
+                            <div class="file-name">DataStruct.docx</div>
+                            <div class="file-size">1.8 MB</div>
+                        </div>
+                        <div class="file-card">
+                            <div class="file-icon ppt">
+                                <i class="ri-file-ppt-2-line"></i>
+                            </div>
+                            <div class="file-name">Stats_Week8.pptx</div>
+                            <div class="file-size">5.2 MB</div>
+                        </div>
+                        <div class="file-card">
+                            <div class="file-icon img">
+                                <i class="ri-image-line"></i>
+                            </div>
+                            <div class="file-name">Calculus.jpg</div>
+                            <div class="file-size">856 KB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access -->
+                <div class="quick-access-section glass animate-in delay-3">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="ri-flashlight-line"></i>
+                            Quick Access
+                        </h3>
+                    </div>
+                    <div class="quick-access-list">
+                        <div class="quick-access-item">
+                            <div class="quick-access-icon">
+                                <i class="ri-stack-line"></i>
+                            </div>
+                            <div class="quick-access-info">
+                                <h4>All Flashcards</h4>
+                                <p>156 cards across 8 decks</p>
+                            </div>
+                            <i class="ri-arrow-right-s-line quick-access-arrow"></i>
+                        </div>
+                        <div class="quick-access-item">
+                            <div class="quick-access-icon">
+                                <i class="ri-file-list-2-line"></i>
+                            </div>
+                            <div class="quick-access-info">
+                                <h4>All Summaries</h4>
+                                <p>8 summaries generated</p>
+                            </div>
+                            <i class="ri-arrow-right-s-line quick-access-arrow"></i>
+                        </div>
+                        <div class="quick-access-item">
+                            <div class="quick-access-icon">
+                                <i class="ri-question-answer-line"></i>
+                            </div>
+                            <div class="quick-access-info">
+                                <h4>Practice Quizzes</h4>
+                                <p>12 quizzes completed</p>
+                            </div>
+                            <i class="ri-arrow-right-s-line quick-access-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function smoothTransition(url) {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // Filter tabs functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                filterContent(filter);
+            });
+        });
+
+        function filterContent(filter) {
+            const chatCards = document.querySelectorAll('.chat-card');
+            
+            chatCards.forEach(card => {
+                card.style.display = 'block';
+                // Add filtering logic based on filter type
+                // For now, show all
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('librarySearch');
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const chatCards = document.querySelectorAll('.chat-card');
+            
+            chatCards.forEach(card => {
+                const title = card.querySelector('.chat-title').textContent.toLowerCase();
+                const preview = card.querySelector('.chat-preview').textContent.toLowerCase();
+                
+                if (title.includes(query) || preview.includes(query) || query === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Chat action buttons
+        document.querySelectorAll('.chat-action-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                if (this.classList.contains('delete')) {
+                    if (confirm('Delete this conversation?')) {
+                        this.closest('.chat-card').style.display = 'none';
+                    }
+                } else if (this.title === 'Pin') {
+                    this.querySelector('i').classList.toggle('ri-pushpin-line');
+                    this.querySelector('i').classList.toggle('ri-pushpin-fill');
+                    this.style.color = this.querySelector('i').classList.contains('ri-pushpin-fill') 
+                        ? 'var(--accent)' : '';
+                }
+            });
+        });
+
+        // Chat card click - open conversation
+        document.querySelectorAll('.chat-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Navigate to chat or show chat detail
+                console.log('Opening chat:', this.querySelector('.chat-title').textContent);
+            });
+        });
+
+        // Load more button
+        document.querySelector('.load-more-btn').addEventListener('click', function() {
+            this.innerHTML = '<i class="ri-loader-4-line"></i> Loading...';
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="ri-refresh-line"></i> Load More Conversations';
+                // Add more chat cards here
+            }, 1500);
+        });
+
+        // Initialize page fade-in
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>

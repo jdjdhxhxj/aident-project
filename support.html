@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Support</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        i {
+            text-shadow: 0 0 7px currentColor;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* App Container */
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 20px 0;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        .back-btn i {
+            font-size: 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* Search Section */
+        .search-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .search-box-large {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .search-box-large:focus-within {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 20px rgba(122, 158, 112, 0.2);
+        }
+
+        .search-box-large input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+
+        .search-box-large input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-box-large i {
+            color: var(--text-tertiary);
+            font-size: 20px;
+        }
+
+        /* Quick Help Cards */
+        .quick-help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .quick-help-card {
+            padding: 24px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid transparent;
+            border-radius: 20px;
+        }
+
+        .quick-help-card:hover {
+            background: rgba(74, 103, 65, 0.15);
+            border-color: rgba(74, 103, 65, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .quick-help-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 14px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            box-shadow: 0 0 20px rgba(74, 103, 65, 0.3);
+        }
+
+        .quick-help-card:nth-child(2) .quick-help-icon {
+            background: linear-gradient(135deg, #14919B 0%, #0d7377 100%);
+            box-shadow: 0 0 20px rgba(20, 145, 155, 0.3);
+        }
+
+        .quick-help-card:nth-child(3) .quick-help-icon {
+            background: linear-gradient(135deg, var(--accent) 0%, #b8cc6a 100%);
+            box-shadow: 0 0 20px rgba(212, 224, 155, 0.3);
+        }
+
+        .quick-help-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .quick-help-desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* FAQ Section */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+        }
+
+        .faq-section {
+            margin-bottom: 40px;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .faq-item.active {
+            border-color: rgba(74, 103, 65, 0.4);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .faq-question i {
+            font-size: 18px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            color: var(--primary-light);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer-content {
+            padding: 0 20px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            margin-bottom: 40px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .contact-card {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(74, 103, 65, 0.15);
+            border-color: rgba(74, 103, 65, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: rgba(74, 103, 65, 0.2);
+            color: var(--primary-light);
+            box-shadow: 0 0 15px rgba(74, 103, 65, 0.25);
+        }
+
+        .contact-card:nth-child(2) .contact-icon {
+            background: rgba(20, 145, 155, 0.2);
+            color: #14919B;
+            box-shadow: 0 0 15px rgba(20, 145, 155, 0.25);
+        }
+
+        .contact-card:nth-child(3) .contact-icon {
+            background: rgba(212, 224, 155, 0.2);
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(212, 224, 155, 0.25);
+        }
+
+        .contact-card:nth-child(4) .contact-icon {
+            background: rgba(129, 199, 132, 0.2);
+            color: var(--success);
+            box-shadow: 0 0 15px rgba(129, 199, 132, 0.25);
+        }
+
+        .contact-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .contact-info p {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* Submit Ticket Section */
+        .ticket-section {
+            padding: 28px;
+            margin-bottom: 40px;
+        }
+
+        .ticket-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 15px rgba(122, 158, 112, 0.15);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.5)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+        }
+
+        .form-select option {
+            background: #1a2a1e;
+            color: var(--text-primary);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 103, 65, 0.4);
+        }
+
+        .btn-primary i {
+            font-size: 18px;
+        }
+
+        /* App Info */
+        .app-info {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+
+        .app-info .logo-small {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .app-info .logo-icon-small {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .app-info .logo-text-small {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-info p {
+            margin-bottom: 4px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 16px;
+            }
+
+            .page-header {
+                margin-bottom: 24px;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .search-title {
+                font-size: 26px;
+            }
+
+            .quick-help-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .quick-help-card {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                padding: 16px 20px;
+                gap: 16px;
+            }
+
+            .quick-help-icon {
+                margin: 0;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                flex-shrink: 0;
+            }
+
+            .quick-help-content {
+                flex: 1;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-title {
+                font-size: 22px;
+            }
+
+            .search-subtitle {
+                font-size: 13px;
+            }
+
+            .search-box-large {
+                padding: 14px 18px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .faq-question {
+                font-size: 13px;
+                padding: 16px;
+            }
+
+            .faq-answer-content {
+                font-size: 12px;
+                padding: 0 16px 16px;
+            }
+
+            .contact-card {
+                padding: 18px;
+            }
+
+            .ticket-section {
+                padding: 20px;
+            }
+
+            .btn-primary {
+                padding: 14px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="page-header">
+            <a href="menu.html" class="back-btn" onclick="smoothTransition('menu.html'); return false;">
+                <i class="ri-arrow-left-s-line"></i>
+            </a>
+            <h1 class="page-title">Support</h1>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section animate-in">
+            <h2 class="search-title">How can we help?</h2>
+            <p class="search-subtitle">Search our knowledge base or browse topics below</p>
+            <div class="search-box-large">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="Search for help articles..." id="helpSearch">
+            </div>
+        </section>
+
+        <!-- Quick Help Cards -->
+        <section class="quick-help-grid">
+            <div class="quick-help-card animate-in delay-1">
+                <div class="quick-help-icon">
+                    <i class="ri-rocket-line"></i>
+                </div>
+                <div class="quick-help-content">
+                    <div class="quick-help-title">Getting Started</div>
+                    <div class="quick-help-desc">New to StudyMind? Start here</div>
+                </div>
+            </div>
+            <div class="quick-help-card animate-in delay-2">
+                <div class="quick-help-icon">
+                    <i class="ri-upload-cloud-2-line"></i>
+                </div>
+                <div class="quick-help-content">
+                    <div class="quick-help-title">Upload & Process</div>
+                    <div class="quick-help-desc">Learn about file handling</div>
+                </div>
+            </div>
+            <div class="quick-help-card animate-in delay-3">
+                <div class="quick-help-icon">
+                    <i class="ri-sparkling-line"></i>
+                </div>
+                <div class="quick-help-content">
+                    <div class="quick-help-title">AI Features</div>
+                    <div class="quick-help-desc">Discover smart study tools</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section animate-in delay-2">
+            <h3 class="section-title">
+                <i class="ri-question-answer-line"></i>
+                Frequently Asked Questions
+            </h3>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>What file formats does StudyMind support?</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            StudyMind supports a wide range of formats including PDF, DOCX, PPTX, DOC, PPT, and image files (JPG, PNG, HEIC). You can also paste text directly or capture notes with your camera.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does the AI summarization work?</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Our AI analyzes your uploaded materials and extracts key concepts, definitions, and important points. It creates structured summaries, flashcards, and study guides tailored to your learning goals.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is my data secure and private?</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely. All your files are encrypted end-to-end, and we never share your data with third parties. You can delete your materials at any time, and they'll be permanently removed from our servers.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I use StudyMind offline?</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! Once your materials are processed, you can access summaries, flashcards, and study plans offline. New uploads and AI features require an internet connection.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I create a study plan?</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            After uploading your materials, select "Create study plan" from the goal options. Tell the AI your exam date or deadline, and it will generate a personalized schedule with daily tasks and milestones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section animate-in delay-3">
+            <h3 class="section-title">
+                <i class="ri-customer-service-2-line"></i>
+                Contact Us
+            </h3>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="ri-mail-line"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Email Support</h4>
+                        <p>support@studymind.app</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="ri-chat-3-line"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Live Chat</h4>
+                        <p>Available 9 AM - 6 PM</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="ri-twitter-x-line"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Twitter / X</h4>
+                        <p>@StudyMindApp</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="ri-discord-line"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Discord Community</h4>
+                        <p>Join 5K+ students</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submit Ticket Section -->
+        <section class="ticket-section glass animate-in delay-4">
+            <h3 class="section-title">
+                <i class="ri-mail-send-line"></i>
+                Submit a Request
+            </h3>
+            <form class="ticket-form" onsubmit="submitTicket(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" class="form-input" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Topic</label>
+                    <select class="form-select" required>
+                        <option value="" disabled selected>Select a topic</option>
+                        <option value="technical">Technical Issue</option>
+                        <option value="account">Account & Billing</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="feedback">General Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" placeholder="Describe your issue or question..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="ri-send-plane-line"></i>
+                    Send Message
+                </button>
+            </form>
+        </section>
+
+        <!-- App Info -->
+        <footer class="app-info">
+            <div class="logo-small">
+                <div class="logo-icon-small">
+                    <i class="ri-brain-line"></i>
+                </div>
+                <span class="logo-text-small">StudyMind</span>
+            </div>
+            <p>Version 2.5.0</p>
+            <p>© 2025 StudyMind. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function smoothTransition(url) {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = url;
+            }, 300);
+        }
+
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked one if it wasn't already open
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        function submitTicket(event) {
+            event.preventDefault();
+            
+            // Show success feedback
+            const btn = event.target.querySelector('.btn-primary');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="ri-check-line"></i> Message Sent!';
+            btn.style.background = 'linear-gradient(135deg, #81c784 0%, #4caf50 100%)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.style.background = '';
+                event.target.reset();
+            }, 2500);
+        }
+
+        // Search functionality
+        const helpSearch = document.getElementById('helpSearch');
+        helpSearch.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                
+                if (question.includes(query) || answer.includes(query) || query === '') {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize page fade-in
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>

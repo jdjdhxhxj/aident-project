@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Welcome</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        :root {
+            --bg-dark: #0f1c15;
+            --primary: #4a6741;        
+            --primary-light: #7a9e70;  
+            --accent: #d4e09b;         
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --error: #e57373;
+            --success: #81c784;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 30px;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            animation: slideIn 0.4s ease;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header with logo */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: rgba(74, 103, 65, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Welcome Page Styles */
+        .welcome-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(74, 103, 65, 0.15);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 50px;
+            box-shadow: 0 0 30px rgba(74, 103, 65, 0.2);
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 48px;
+        }
+
+        /* Option buttons on welcome page */
+        .welcome-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: var(--text-primary);
+        }
+
+        .option-btn:hover {
+            background: rgba(74, 103, 65, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(74, 103, 65, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .option-icon.register {
+            background: rgba(212, 224, 155, 0.2);
+        }
+
+        .option-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .option-content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .option-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .option-btn:hover .option-arrow {
+            transform: translateX(4px);
+            color: var(--text-secondary);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Social buttons */
+        .social-login {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            background: rgba(74, 103, 65, 0.15);
+            border-color: var(--primary);
+        }
+
+        .social-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 32px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* Form styles */
+        .form-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(74, 103, 65, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .input-icon:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Form row */
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .checkbox-label a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Forgot link */
+        .forgot-link {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 24px;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Primary button */
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #5a7d50;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Form footer */
+        .form-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password strength */
+        .password-strength {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--glass-border);
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+
+        .strength-bar.weak {
+            background: var(--error);
+        }
+
+        .strength-bar.medium {
+            background: #ffb74d;
+        }
+
+        .strength-bar.strong {
+            background: var(--success);
+        }
+
+        /* Error/Success message */
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.error {
+            background: rgba(229, 115, 115, 0.2);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .message.success {
+            background: rgba(129, 199, 132, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding-top: 24px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Mobile responsive - 600px */
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 24px 20px;
+                max-width: 100%;
+            }
+
+            .header {
+                margin-bottom: 32px;
+            }
+
+            .logo {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .welcome-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 42px;
+                margin-bottom: 24px;
+            }
+
+            .welcome-title,
+            .form-title {
+                font-size: 24px;
+            }
+
+            .welcome-subtitle,
+            .form-subtitle {
+                font-size: 14px;
+                margin-bottom: 36px;
+            }
+
+            .option-btn {
+                padding: 16px;
+                gap: 14px;
+            }
+
+            .option-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .option-content h3 {
+                font-size: 15px;
+            }
+
+            .option-content p {
+                font-size: 12px;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+
+            .social-btn {
+                padding: 14px;
+            }
+
+            .form-input {
+                padding: 14px 16px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .btn-primary {
+                padding: 16px;
+            }
+
+            .back-btn {
+                margin-bottom: 24px;
+            }
+
+            .divider {
+                margin: 20px 0;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 360px) {
+            .app-container {
+                padding: 20px 16px;
+            }
+
+            .welcome-icon {
+                width: 90px;
+                height: 90px;
+                font-size: 36px;
+            }
+
+            .welcome-title,
+            .form-title {
+                font-size: 22px;
+            }
+
+            .option-btn {
+                padding: 14px 12px;
+            }
+
+            .option-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Page 1: Welcome -->
+        <div id="page-welcome" class="page active">
+            <div class="header">
+                <div class="logo">🎓</div>
+                <span class="logo-text">StudyMind</span>
+            </div>
+
+            <div class="welcome-content">
+                <div class="welcome-icon">👋</div>
+                <h1 class="welcome-title">Welcome!</h1>
+                <p class="welcome-subtitle">Ready to continue your learning journey? Choose how you'd like to proceed.</p>
+
+                <div class="welcome-options">
+                    <button class="option-btn" onclick="showPage('page-login')">
+                        <div class="option-icon">🔐</div>
+                        <div class="option-content">
+                            <h3>Sign In</h3>
+                            <p>Already have an account? Welcome back!</p>
+                        </div>
+                        <span class="option-arrow">→</span>
+                    </button>
+
+                    <button class="option-btn" onclick="showPage('page-register')">
+                        <div class="option-icon register">✨</div>
+                        <div class="option-content">
+                            <h3>Create Account</h3>
+                            <p>New here? Join our learning community</p>
+                        </div>
+                        <span class="option-arrow">→</span>
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">or continue with</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                        </svg>
+                        GitHub
+                    </button>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                © 2026 StudyMind. All rights reserved.
+            </div>
+        </div>
+
+        <!-- Page 2: Login -->
+        <div id="page-login" class="page">
+            <div class="header">
+                <div class="logo">🎓</div>
+                <span class="logo-text">StudyMind</span>
+            </div>
+
+            <div class="form-content">
+                <button class="back-btn" onclick="showPage('page-welcome')">
+                    ← Back
+                </button>
+
+                <h1 class="form-title">Sign In</h1>
+                <p class="form-subtitle">Welcome back! Enter your credentials to access your account.</p>
+
+                <!-- Message area for errors/success -->
+                <div id="login-message"></div>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="input-icon" onclick="togglePassword('login-password', this)">👁️</button>
+                        </div>
+                    </div>
+
+                    <a href="#" class="forgot-link">Forgot password?</a>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox" id="remember-me">
+                        <label class="checkbox-label" for="remember-me">Remember me for 30 days</label>
+                    </div>
+
+                    <button type="submit" id="login-btn" class="btn-primary">
+                        Sign In
+                        <span>→</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">or</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <div class="social-login">
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                        </svg>
+                        GitHub
+                    </button>
+                </div>
+
+                <p class="form-footer">
+                    Don't have an account? <a href="#" onclick="showPage('page-register'); return false;">Create one</a>
+                </p>
+            </div>
+
+            <div class="page-footer">
+                © 2026 StudyMind. All rights reserved.
+            </div>
+        </div>
+
+        <!-- Page 3: Register -->
+        <div id="page-register" class="page">
+            <div class="header">
+                <div class="logo">🎓</div>
+                <span class="logo-text">StudyMind</span>
+            </div>
+
+            <div class="form-content">
+                <button class="back-btn" onclick="showPage('page-welcome')">
+                    ← Back
+                </button>
+
+                <h1 class="form-title">Create Account</h1>
+                <p class="form-subtitle">Join thousands of learners. Start your journey today!</p>
+
+                <!-- Message area for errors/success -->
+                <div id="register-message"></div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" id="register-firstname" class="form-input" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" id="register-lastname" class="form-input" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="register-email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="register-password" class="form-input" placeholder="Create a strong password" required oninput="checkPasswordStrength(this.value)">
+                            <button type="button" class="input-icon" onclick="togglePassword('register-password', this)">👁️</button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="strength-1"></div>
+                            <div class="strength-bar" id="strength-2"></div>
+                            <div class="strength-bar" id="strength-3"></div>
+                            <div class="strength-bar" id="strength-4"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" id="register-confirm" class="form-input" placeholder="Confirm your password" required>
+                            <button type="button" class="input-icon" onclick="togglePassword('register-confirm', this)">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox" id="terms" required>
+                        <label class="checkbox-label" for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" id="register-btn" class="btn-primary">
+                        Create Account
+                        <span>✨</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">or sign up with</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <div class="social-login">
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="social-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                        </svg>
+                        GitHub
+                    </button>
+                </div>
+
+                <p class="form-footer">
+                    Already have an account? <a href="#" onclick="showPage('page-login'); return false;">Sign in</a>
+                </p>
+            </div>
+
+            <div class="page-footer">
+                © 2026 StudyMind. All rights reserved.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // API URL - your Python server
+        const API_URL = 'http://172.20.10.7:5000/api';
+
+        // Page navigation
+        function showPage(pageId) {
+            // Clear messages when changing pages
+            document.getElementById('login-message').innerHTML = '';
+            document.getElementById('register-message').innerHTML = '';
+            
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Show message (error or success)
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="message ${type}">${message}</div>`;
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                el.innerHTML = '';
+            }, 5000);
+        }
+
+        // Toggle password visibility
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const bars = [
+                document.getElementById('strength-1'),
+                document.getElementById('strength-2'),
+                document.getElementById('strength-3'),
+                document.getElementById('strength-4')
+            ];
+
+            // Reset all bars
+            bars.forEach(bar => {
+                bar.className = 'strength-bar';
+            });
+
+            if (password.length === 0) return;
+
+            let strength = 0;
+
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            const level = Math.min(4, strength);
+
+            for (let i = 0; i < level; i++) {
+                if (level <= 1) {
+                    bars[i].classList.add('weak');
+                } else if (level <= 2) {
+                    bars[i].classList.add('medium');
+                } else {
+                    bars[i].classList.add('strong');
+                }
+            }
+        }
+
+        // ============ LOGIN HANDLER ============
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            const btn = document.getElementById('login-btn');
+            
+            // Validate
+            if (!email || !password) {
+                showMessage('login-message', 'Please enter email and password', 'error');
+                return;
+            }
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = 'Signing in...';
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, rememberMe })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                  localStorage.setItem('studymind_user', JSON.stringify(data.user));
+                  document.location = 'menu.html';
+
+                    setTimeout(() => {
+                        window.location.href = 'menu.html';
+                    }, 500);
+                } else {
+                    // Error from server
+                    showMessage('login-message', data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('login-message', 'Cannot connect to server. Make sure python app.py is running!', 'error');
+            } finally {
+                // Restore button
+                btn.disabled = false;
+                btn.innerHTML = 'Sign In <span>→</span>';
+            }
+        }
+
+        // ============ REGISTER HANDLER ============
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const firstName = document.getElementById('register-firstname').value.trim();
+            const lastName = document.getElementById('register-lastname').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            const btn = document.getElementById('register-btn');
+            
+            // Validate
+            if (!firstName || !lastName) {
+                showMessage('register-message', 'Please enter your name', 'error');
+                return;
+            }
+            
+            if (!email) {
+                showMessage('register-message', 'Please enter your email', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('register-message', 'Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (password !== confirm) {
+                showMessage('register-message', 'Passwords do not match!', 'error');
+                return;
+            }
+            
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = 'Creating account...';
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, firstName, lastName })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Success! Save user and redirect
+                    localStorage.setItem('studymind_user', JSON.stringify(data.user));
+                    showMessage('register-message', 'Account created! Redirecting...', 'success');
+                    
+                    setTimeout(() => {
+                         window.location.replace('menu.html');
+                    }, 500);
+                } else {
+                    // Error from server
+                    showMessage('register-message', data.error || 'Registration failed', 'error');
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showMessage('register-message', 'Cannot connect to server. Make sure python app.py is running!', 'error');
+            } finally {
+                // Restore button
+                btn.disabled = false;
+                btn.innerHTML = 'Create Account <span>✨</span>';
+            }
+        }
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const user = localStorage.getItem('studymind_user');
+            if (user) {
+                // Already logged in, could redirect to menu
+                // window.location.href = 'menu.html';
+            }
+        });
+    </script>
+</body>
+</html>

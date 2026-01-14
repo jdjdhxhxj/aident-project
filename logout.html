@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Logout</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+        
+
+        i {
+            text-shadow: 0 0 7px currentColor;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* Logout Container */
+        .logout-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .logout-card {
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 25px rgba(74, 103, 65, 0.4);
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* User Avatar */
+        .user-section {
+            margin-bottom: 28px;
+        }
+
+        .user-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 28px;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 30px rgba(74, 103, 65, 0.35);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-name-large {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        /* Logout Icon */
+        .logout-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: rgba(229, 115, 115, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(229, 115, 115, 0.3);
+            box-shadow: 0 0 30px rgba(229, 115, 115, 0.2);
+        }
+
+        .logout-icon-wrapper i {
+            font-size: 32px;
+            color: var(--error);
+            text-shadow: 0 0 15px rgba(229, 115, 115, 0.6);
+        }
+
+        /* Text */
+        .logout-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .logout-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn i {
+            font-size: 20px;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #e57373 0%, #c62828 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(229, 115, 115, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(229, 115, 115, 0.4);
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider-text {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid transparent;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-secondary);
+            min-width: 90px;
+        }
+
+        .quick-action:hover {
+            background: rgba(74, 103, 65, 0.15);
+            border-color: rgba(74, 103, 65, 0.3);
+            color: var(--text-primary);
+        }
+
+        .quick-action i {
+            font-size: 22px;
+            color: var(--primary-light);
+        }
+
+        .quick-action span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Loading State */
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .btn-loading .btn-text {
+            display: none;
+        }
+
+        .btn-loading .spinner {
+            display: block;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success State */
+        .logout-success {
+            display: none;
+        }
+
+        .logout-success.active {
+            display: block;
+        }
+
+        .logout-form.hidden {
+            display: none;
+        }
+
+        .success-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: rgba(129, 199, 132, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(129, 199, 132, 0.3);
+            box-shadow: 0 0 30px rgba(129, 199, 132, 0.2);
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-icon-wrapper i {
+            font-size: 40px;
+            color: var(--success);
+            text-shadow: 0 0 15px rgba(129, 199, 132, 0.6);
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--success);
+        }
+
+        .success-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 480px) {
+            .logout-container {
+                padding: 16px;
+            }
+
+            .logout-card {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+
+            .logo {
+                margin-bottom: 24px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+
+            .logo-text {
+                font-size: 22px;
+            }
+
+            .user-avatar-large {
+                width: 64px;
+                height: 64px;
+                font-size: 24px;
+            }
+
+            .user-name-large {
+                font-size: 18px;
+            }
+
+            .logout-icon-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logout-icon-wrapper i {
+                font-size: 26px;
+            }
+
+            .logout-title {
+                font-size: 20px;
+            }
+
+            .logout-message {
+                font-size: 13px;
+            }
+
+            .btn {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            .quick-action {
+                padding: 14px 16px;
+                min-width: 80px;
+            }
+
+            .quick-action i {
+                font-size: 20px;
+            }
+
+            .quick-action span {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="logout-container">
+        <div class="logout-card glass animate-in">
+            <!-- Logo -->
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="ri-brain-line"></i>
+                </div>
+                <span class="logo-text">StudyMind</span>
+            </div>
+
+            <!-- Logout Form -->
+            <div class="logout-form" id="logoutForm">
+                <!-- User Info -->
+                <div class="user-section">
+                    <div class="user-avatar-large">AK</div>
+                    <div class="user-name-large">Alex Kowalski</div>
+                    <div class="user-email">alex.kowalski@email.com</div>
+                </div>
+
+                <!-- Logout Icon -->
+                <div class="logout-icon-wrapper">
+                    <i class="ri-logout-box-r-line"></i>
+                </div>
+
+                <!-- Text -->
+                <h1 class="logout-title">Sign Out?</h1>
+                <p class="logout-message">
+                    Are you sure you want to sign out? Your study progress is saved and will be here when you return.
+                </p>
+
+                <!-- Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-logout" id="logoutBtn" onclick="performLogout()">
+                        <i class="ri-logout-box-r-line"></i>
+                        <span class="btn-text">Sign Out</span>
+                        <div class="spinner"></div>
+                    </button>
+                    <button class="btn btn-cancel" onclick="smoothTransition('menu.html')">
+                        <i class="ri-arrow-left-s-line"></i>
+                        <span>Cancel</span>
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">or</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="settings.html" class="quick-action" onclick="smoothTransition('settings.html'); return false;">
+                        <i class="ri-settings-4-line"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="support.html" class="quick-action" onclick="smoothTransition('support.html'); return false;">
+                        <i class="ri-question-line"></i>
+                        <span>Help</span>
+                    </a>
+                    <a href="index.html" class="quick-action" onclick="smoothTransition('index.html'); return false;">
+                        <i class="ri-home-5-line"></i>
+                        <span>Home</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div class="logout-success" id="logoutSuccess">
+                <div class="success-icon-wrapper">
+                    <i class="ri-check-line"></i>
+                </div>
+                <h2 class="success-title">Signed Out Successfully</h2>
+                <p class="success-message">
+                    Thanks for studying with us today! See you next time.
+                </p>
+                <button class="btn btn-cancel" onclick="smoothTransition('registration.html')">
+                    <i class="ri-login-box-line"></i>
+                    <span>Sign In Again</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function smoothTransition(url) {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = url;
+            }, 300);
+        }
+
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                smoothTransition('index.html');
+            }
+        }
+
+        function performLogout() {
+            const btn = document.getElementById('logoutBtn');
+            const form = document.getElementById('logoutForm');
+            const success = document.getElementById('logoutSuccess');
+
+            // Show loading state
+            btn.classList.add('btn-loading');
+
+            // Simulate logout process
+            setTimeout(function() {
+                // Hide form, show success
+                form.classList.add('hidden');
+                success.classList.add('active');
+
+                // Clear any stored session data (example)
+                // localStorage.removeItem('userSession');
+                // sessionStorage.clear();
+
+                // Auto redirect after 3 seconds
+                setTimeout(function() {
+                    smoothTransition('registration.html');
+                }, 3000);
+            }, 1500);
+        }
+
+        // Initialize page fade-in
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '1';
+        });
+
+        // Keyboard shortcut: Escape to cancel
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>

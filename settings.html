@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMind - Settings</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a6741;
+            --primary-light: #7a9e70;
+            --primary-dark: #2d4432;
+            --secondary: #d4e09b;
+            --accent: #d4e09b;
+            --success: #81c784;
+            --warning: #ffb74d;
+            --error: #e57373;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e30 0%, #0f1c15 60%, #050a07 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 103, 65, 0.3) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 224, 155, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Glass Card */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        /* Container */
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+        }
+
+        .back-btn i {
+            font-size: 20px;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Settings Content */
+        .settings-content {
+            padding: 24px;
+        }
+
+        /* Settings Section */
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        /* Settings Item */
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .settings-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .settings-item.active {
+            background: rgba(74, 103, 65, 0.2);
+            border: 1px solid rgba(74, 103, 65, 0.3);
+        }
+
+        .item-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(74, 103, 65, 0.2);
+            color: var(--primary-light);
+            flex-shrink: 0;
+        }
+
+        .item-icon.purple { background: rgba(123, 104, 238, 0.2); color: #9d8df1; }
+        .item-icon.teal { background: rgba(13, 115, 119, 0.2); color: #14919B; }
+        .item-icon.orange { background: rgba(255, 152, 0, 0.2); color: #FF9800; }
+        .item-icon.red { background: rgba(229, 115, 115, 0.2); color: #e57373; }
+        .item-icon.blue { background: rgba(100, 181, 246, 0.2); color: #64b5f6; }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .item-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-arrow {
+            color: var(--text-tertiary);
+            font-size: 18px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 25px;
+        }
+
+        /* Language Selection */
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-option:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-option.selected {
+            background: rgba(74, 103, 65, 0.2);
+            border-color: var(--primary);
+        }
+
+        .language-flag {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        .language-info {
+            flex: 1;
+        }
+
+        .language-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .language-native {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .language-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .language-option.selected .language-check {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Profile Section */
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(74, 103, 65, 0.15);
+            border: 1px solid rgba(74, 103, 65, 0.3);
+            border-radius: 18px;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .profile-plan {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(212, 224, 155, 0.2);
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .profile-edit {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .profile-edit:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+
+        /* App Version */
+        .app-version {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+
+        .app-version span {
+            color: var(--primary-light);
+        }
+
+        /* Save Button */
+        .save-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 103, 65, 0.4);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 24px;
+            background: rgba(15, 28, 21, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast i {
+            color: var(--success);
+            font-size: 18px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 600px) {
+            .settings-container {
+                padding: 12px;
+            }
+
+            .settings-header {
+                padding: 16px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .header-title h1 {
+                font-size: 20px;
+            }
+
+            .settings-content {
+                padding: 16px;
+            }
+
+            .language-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-item {
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .item-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .item-title {
+                font-size: 14px;
+            }
+
+            .item-desc {
+                font-size: 12px;
+            }
+
+            .profile-card {
+                padding: 16px;
+                flex-wrap: wrap;
+            }
+
+            .profile-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 20px;
+            }
+
+            .profile-name {
+                font-size: 16px;
+            }
+
+            .language-option {
+                padding: 14px;
+            }
+
+            .language-flag {
+                width: 36px;
+                height: 36px;
+                font-size: 20px;
+            }
+
+            .toast {
+                left: 16px;
+                right: 16px;
+                transform: translateX(0) translateY(100px);
+                width: auto;
+            }
+
+            .toast.show {
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="settings-container">
+        <!-- Header -->
+        <header class="settings-header glass">
+            <button class="back-btn" onclick="goBack()">
+                <i class="ri-arrow-left-line"></i>
+            </button>
+            <div class="header-title">
+                <h1>Settings</h1>
+                <p>Customize your StudyMind experience</p>
+            </div>
+        </header>
+
+        <!-- Settings Content -->
+        <div class="settings-content glass">
+            <!-- Profile Section -->
+            <div class="profile-card">
+                <div class="profile-avatar">AK</div>
+                <div class="profile-info">
+                    <div class="profile-name">Alex Kowalski</div>
+                    <div class="profile-email">alex.kowalski@email.com</div>
+                    <div class="profile-plan">
+                        <i class="ri-vip-crown-line"></i>
+                        Pro Plan
+                    </div>
+                </div>
+                <button class="profile-edit">
+                    <i class="ri-pencil-line"></i>
+                </button>
+            </div>
+
+            <!-- Language Section -->
+            <div class="settings-section">
+                <div class="section-title">Language</div>
+                <div class="language-grid">
+                    <div class="language-option selected" onclick="selectLanguage(this, 'en')">
+                        <div class="language-flag">🇬🇧</div>
+                        <div class="language-info">
+                            <div class="language-name">English</div>
+                            <div class="language-native">English</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage(this, 'uk')">
+                        <div class="language-flag">🇺🇦</div>
+                        <div class="language-info">
+                            <div class="language-name">Ukrainian</div>
+                            <div class="language-native">Українська</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage(this, 'pl')">
+                        <div class="language-flag">🇵🇱</div>
+                        <div class="language-info">
+                            <div class="language-name">Polish</div>
+                            <div class="language-native">Polski</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage(this, 'de')">
+                        <div class="language-flag">🇩🇪</div>
+                        <div class="language-info">
+                            <div class="language-name">German</div>
+                            <div class="language-native">Deutsch</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage(this, 'fr')">
+                        <div class="language-flag">🇫🇷</div>
+                        <div class="language-info">
+                            <div class="language-name">French</div>
+                            <div class="language-native">Français</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage(this, 'es')">
+                        <div class="language-flag">🇪🇸</div>
+                        <div class="language-info">
+                            <div class="language-name">Spanish</div>
+                            <div class="language-native">Español</div>
+                        </div>
+                        <div class="language-check">
+                            <i class="ri-check-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences Section -->
+            <div class="settings-section">
+                <div class="section-title">Preferences</div>
+                
+                <div class="settings-item" onclick="toggleSwitch(this)">
+                    <div class="item-icon">
+                        <i class="ri-notification-3-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Push Notifications</div>
+                        <div class="item-desc">Receive reminders and updates</div>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+
+                <div class="settings-item" onclick="toggleSwitch(this)">
+                    <div class="item-icon teal">
+                        <i class="ri-mail-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Email Notifications</div>
+                        <div class="item-desc">Weekly progress reports</div>
+                    </div>
+                    <div class="toggle-switch"></div>
+                </div>
+
+                <div class="settings-item" onclick="toggleSwitch(this)">
+                    <div class="item-icon purple">
+                        <i class="ri-moon-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Dark Mode</div>
+                        <div class="item-desc">Always use dark theme</div>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+
+                <div class="settings-item" onclick="toggleSwitch(this)">
+                    <div class="item-icon orange">
+                        <i class="ri-volume-up-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Sound Effects</div>
+                        <div class="item-desc">Play sounds for actions</div>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+            </div>
+
+            <!-- Account Section -->
+            <div class="settings-section">
+                <div class="section-title">Account</div>
+                
+                <div class="settings-item">
+                    <div class="item-icon blue">
+                        <i class="ri-shield-check-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Privacy & Security</div>
+                        <div class="item-desc">Manage your data and passwords</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+
+                <div class="settings-item">
+                    <div class="item-icon">
+                        <i class="ri-cloud-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Storage & Data</div>
+                        <div class="item-desc">Manage cached files and storage</div>
+                    </div>
+                    <div class="item-value">
+                        2.4 GB
+                        <i class="item-arrow ri-arrow-right-s-line"></i>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="item-icon teal">
+                        <i class="ri-download-cloud-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Export Data</div>
+                        <div class="item-desc">Download your study materials</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+            </div>
+
+            <!-- Support Section -->
+            <div class="settings-section">
+                <div class="section-title">Support</div>
+                
+                <div class="settings-item">
+                    <div class="item-icon purple">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Help Center</div>
+                        <div class="item-desc">FAQs and guides</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+
+                <div class="settings-item">
+                    <div class="item-icon orange">
+                        <i class="ri-feedback-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Send Feedback</div>
+                        <div class="item-desc">Help us improve StudyMind</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+
+                <div class="settings-item">
+                    <div class="item-icon">
+                        <i class="ri-file-text-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Terms & Privacy</div>
+                        <div class="item-desc">Legal information</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-section">
+                <div class="section-title">Danger Zone</div>
+                
+                <div class="settings-item">
+                    <div class="item-icon red">
+                        <i class="ri-logout-box-r-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Log Out</div>
+                        <div class="item-desc">Sign out of your account</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+
+                <div class="settings-item">
+                    <div class="item-icon red">
+                        <i class="ri-delete-bin-line"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">Delete Account</div>
+                        <div class="item-desc">Permanently remove your data</div>
+                    </div>
+                    <i class="item-arrow ri-arrow-right-s-line"></i>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <button class="save-btn" onclick="saveSettings()">
+                <i class="ri-save-line"></i>
+                Save Changes
+            </button>
+
+            <!-- App Version -->
+            <div class="app-version">
+                StudyMind <span>v2.5.0</span> • Made with 💚
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="ri-check-line"></i>
+        <span>Settings saved successfully!</span>
+    </div>
+
+    <script>
+        // Go back to menu
+        function goBack() {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = 'menu.html';
+            }, 300);
+        }
+
+        // Smooth page transition
+        function smoothTransition(url) {
+            document.body.style.transition = "opacity 0.3s ease";
+            document.body.style.opacity = "0";
+            setTimeout(function() {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // Select language
+        let selectedLanguage = 'en';
+        
+        function selectLanguage(element, lang) {
+            // Remove selected from all
+            document.querySelectorAll('.language-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected to clicked
+            element.classList.add('selected');
+            selectedLanguage = lang;
+            
+            // Save to localStorage
+            localStorage.setItem('studymind-language', lang);
+        }
+
+        // Toggle switch
+        function toggleSwitch(item) {
+            const toggle = item.querySelector('.toggle-switch');
+            if (toggle) {
+                toggle.classList.toggle('active');
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            // Save language
+            localStorage.setItem('studymind-language', selectedLanguage);
+            
+            // Show toast
+            showToast('Settings saved successfully!');
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load saved language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('studymind-language');
+            if (savedLang) {
+                selectedLanguage = savedLang;
+                document.querySelectorAll('.language-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                const langOption = document.querySelector(`[onclick="selectLanguage(this, '${savedLang}')"]`);
+                if (langOption) {
+                    langOption.classList.add('selected');
+                }
+            }
+        });
+        if (("standalone" in window.navigator) && window.navigator.standalone) {
+        // ... (весь той код, що був тут) ...
+    }
+    </script>
+</body>
+</html>
