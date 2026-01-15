@@ -61,14 +61,16 @@ class ProductionConfig(Config):
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith('postgres://'):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace('postgres://', 'postgresql://', 1)
     
-    # Security
+    # Security - IMPORTANT for cross-origin cookies
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin requests
     
-    # CORS - update with your actual domain
+    # CORS - Your actual domains
     CORS_ORIGINS = [
-        'https://yourdomain.com',
-        'https://www.yourdomain.com'
+        'https://aiden-t.dev',
+        'https://www.aiden-t.dev',
+        'https://aident-project.onrender.com',
     ]
 
 

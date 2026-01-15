@@ -25,10 +25,19 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size
 
+# Session cookie settings for cross-origin requests
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+
 ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'heic'}
 
 # Enable CORS for frontend
-CORS(app, supports_credentials=True, origins=['*'])
+CORS(app, 
+     supports_credentials=True, 
+     origins=['https://aiden-t.dev', 'https://www.aiden-t.dev', 'https://aident-project.onrender.com'],
+     allow_headers=['Content-Type', 'Authorization'],
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
 # Initialize database
 init_db(app)
