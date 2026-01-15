@@ -6,7 +6,7 @@
 
 const StudyMindAPI = {
     // Base URL - update this to your server address
-    baseURL: 'https://aident-project.onrender.com',
+    baseURL: '/api',
     
     // ==================== CONFIGURATION ====================
     

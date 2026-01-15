@@ -36,6 +36,20 @@ init_db(app)
 # Create uploads folder
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# ==================== STATIC FILES ROUTES ====================
+
+from flask import send_from_directory
+
+@app.route('/')
+def serve_index():
+    """Serve main page"""
+    return send_from_directory('.', 'index.html')
+
+@app.route('/<path:filename>')
+def serve_static_files(filename):
+    """Serve static files (HTML, JS, CSS)"""
+    return send_from_directory('.', filename)
+
 
 # ==================== HELPERS ====================
 

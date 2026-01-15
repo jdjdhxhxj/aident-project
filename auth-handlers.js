@@ -5,7 +5,7 @@
  */
 
 // API Base URL - change this if your server runs on different port
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 /**
  * Handle Login Form Submission
