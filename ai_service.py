@@ -17,15 +17,14 @@ import io
 # ==================== CONFIGURATION ====================
 
 # Get your FREE API key from: https://makersuite.google.com/app/apikey
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyDgLncU1ITiSxqETZDtsnB2Yw1Ts9STwys')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Models
-TEXT_MODEL = genai.GenerativeModel('gemini-pro')  # Free, fast
-VISION_MODEL = genai.GenerativeModel('gemini-pro-vision')  # Supports images
-
+# Models - Updated to latest Gemini models
+TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')  # Free, fast
+VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')  # Also supports images
 
 # ==================== TEXT EXTRACTION ====================
 
