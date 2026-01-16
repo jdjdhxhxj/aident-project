@@ -16,15 +16,19 @@ import io
 
 # ==================== CONFIGURATION ====================
 
-# Get your FREE API key from: https://makersuite.google.com/app/apikey
+# Get API key from environment variable
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+
+if not GEMINI_API_KEY:
+    print("WARNING: GEMINI_API_KEY not set!")
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Models - Updated to latest Gemini models
-TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')  # Free, fast
-VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')  # Also supports images
+# Models - Updated to latest Gemini models (2024/2025)
+TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')
+VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')
+
 
 # ==================== TEXT EXTRACTION ====================
 
@@ -35,7 +39,9 @@ def extract_text_from_pdf(file_path):
         with open(file_path, 'rb') as file:
             pdf_reader = PyPDF2.PdfReader(file)
             for page in pdf_reader.pages:
-                text += page.extract_text() + "\n"
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text + "\n"
     except Exception as e:
         print(f"Error extracting PDF: {e}")
     return text.strip()
@@ -96,14 +102,6 @@ def get_file_content(file_path, file_type):
 def create_compendium(content, goal="understand"):
     """
     Create a study compendium from content using AI
-    
-    Goals:
-    - understand: Help me understand the material
-    - summary: Create a concise summary
-    - exam: Prepare for exam
-    - questions: Generate practice questions
-    - plan: Create study plan
-    - review: Quick review/flashcards
     """
     
     prompts = {
@@ -192,7 +190,7 @@ def create_compendium(content, goal="understand"):
     
     MATERIAL TO ANALYZE:
     ---
-    {content[:15000]}  # Limit content length for API
+    {content[:15000]}
     ---
     
     Format your response with clear headers, bullet points, and organized sections.
@@ -208,6 +206,7 @@ def create_compendium(content, goal="understand"):
             "created_at": datetime.utcnow().isoformat()
         }
     except Exception as e:
+        print(f"Error creating compendium: {e}")
         return {
             "success": False,
             "error": str(e)
@@ -250,6 +249,7 @@ def create_compendium_from_image(image_path, goal="understand"):
             "created_at": datetime.utcnow().isoformat()
         }
     except Exception as e:
+        print(f"Error creating compendium from image: {e}")
         return {
             "success": False,
             "error": str(e)
@@ -323,7 +323,6 @@ def generate_flashcards(content, count=10):
     
     try:
         response = TEXT_MODEL.generate_content(prompt)
-        # Extract JSON from response
         text = response.text
         # Find JSON array in response
         match = re.search(r'\[[\s\S]*\]', text)
@@ -375,8 +374,6 @@ def generate_quiz(content, question_count=5):
 def process_material(file_path, file_type, goal="understand"):
     """
     Main function to process uploaded material
-    
-    Returns compendium and additional study aids
     """
     result = {
         "success": False,
@@ -393,6 +390,7 @@ def process_material(file_path, file_type, goal="understand"):
         # For images, use vision model directly
         if file_type in ['img', 'image', 'jpg', 'jpeg', 'png', 'heic']:
             compendium_result = create_compendium_from_image(file_path, goal)
+            content = ""  # No text content for images
         else:
             # Extract text from document
             content = get_file_content(file_path, file_type)
@@ -406,14 +404,14 @@ def process_material(file_path, file_type, goal="understand"):
             # Generate compendium
             compendium_result = create_compendium(content, goal)
         
-        if compendium_result["success"]:
+        if compendium_result.get("success"):
             result["success"] = True
             result["compendium"] = compendium_result["compendium"]
             
-            # Generate flashcards for certain goals
-            if goal in ["understand", "exam", "review"] and file_type not in ['img', 'image', 'jpg', 'jpeg', 'png', 'heic']:
+            # Generate flashcards for certain goals (only if we have text content)
+            if goal in ["understand", "exam", "review"] and content:
                 flashcards_result = generate_flashcards(content, count=10)
-                if flashcards_result["success"]:
+                if flashcards_result.get("success"):
                     result["flashcards"] = flashcards_result["flashcards"]
         else:
             result["error"] = compendium_result.get("error", "Unknown error")
@@ -421,6 +419,7 @@ def process_material(file_path, file_type, goal="understand"):
         return result
         
     except Exception as e:
+        print(f"Error processing material: {e}")
         result["error"] = str(e)
         return result
 
@@ -428,28 +427,22 @@ def process_material(file_path, file_type, goal="understand"):
 # ==================== TESTING ====================
 
 if __name__ == "__main__":
-    # Test with sample text
-    sample_text = """
-    Machine Learning is a subset of artificial intelligence that enables systems to learn 
-    and improve from experience without being explicitly programmed. 
-    
-    Key concepts:
-    1. Supervised Learning - Learning from labeled data
-    2. Unsupervised Learning - Finding patterns in unlabeled data
-    3. Neural Networks - Computing systems inspired by biological brains
-    4. Deep Learning - Neural networks with multiple layers
-    
-    Applications include image recognition, natural language processing, and recommendation systems.
-    """
-    
     print("Testing AI Service...")
-    print("=" * 50)
+    print(f"API Key set: {'Yes' if GEMINI_API_KEY else 'No'}")
     
-    # Test compendium creation
-    result = create_compendium(sample_text, "summary")
-    
-    if result["success"]:
-        print("✅ Compendium created successfully!")
-        print("\n" + result["compendium"][:500] + "...")
+    if GEMINI_API_KEY:
+        # Test with sample text
+        sample_text = """
+        Machine Learning is a subset of artificial intelligence that enables systems to learn 
+        and improve from experience without being explicitly programmed.
+        """
+        
+        result = create_compendium(sample_text, "summary")
+        
+        if result["success"]:
+            print("✅ AI Service working!")
+            print(result["compendium"][:200] + "...")
+        else:
+            print("❌ Error:", result["error"])
     else:
-        print("❌ Error:", result["error"])
+        print("❌ GEMINI_API_KEY not set")

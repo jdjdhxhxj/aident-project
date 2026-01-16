@@ -1,18 +1,20 @@
 """
 AI Routes for StudyMind
-Add these routes to your app.py
 """
 
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 import os
 
-# Import AI service
+# Import AI service functions
 from ai_service import (
     process_material, 
     create_compendium,
     generate_flashcards,
-    get_file_content
+    generate_quiz,
+    get_file_content,
+    ask_question,
+    explain_concept
 )
 
 ai_bp = Blueprint('ai', __name__)
@@ -38,15 +40,15 @@ def get_file_type(filename):
 
 # ==================== AI ENDPOINTS ====================
 
-@ai_bp.route('/api/ai/process', methods=['POST'])
+@ai_bp.route('/api/ai/process', methods=['POST', 'OPTIONS'])
 def process_file():
     """
     Process uploaded file with AI and create compendium
-    
-    Form data:
-    - file: The file to process
-    - goal: understand|summary|exam|questions|plan|review
     """
+    # Handle preflight request
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     if 'file' not in request.files:
         return jsonify({'success': False, 'error': 'No file provided'}), 400
     
@@ -72,24 +74,21 @@ def process_file():
         # Process with AI
         result = process_material(file_path, file_type, goal)
         
-        # Clean up temp file (optional - you might want to keep it)
-        # os.remove(file_path)
-        
         return jsonify(result)
         
     except Exception as e:
+        print(f"Error in process_file: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
-@ai_bp.route('/api/ai/compendium', methods=['POST'])
+@ai_bp.route('/api/ai/compendium', methods=['POST', 'OPTIONS'])
 def create_compendium_endpoint():
     """
     Create compendium from text content
-    
-    JSON body:
-    - content: Text content to process
-    - goal: understand|summary|exam|questions|plan|review
     """
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     data = request.get_json()
     
     if not data or not data.get('content'):
@@ -102,15 +101,14 @@ def create_compendium_endpoint():
     return jsonify(result)
 
 
-@ai_bp.route('/api/ai/ask', methods=['POST'])
+@ai_bp.route('/api/ai/ask', methods=['POST', 'OPTIONS'])
 def ask_question_endpoint():
     """
     Ask a question about material
-    
-    JSON body:
-    - content: The study material
-    - question: The question to ask
     """
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     data = request.get_json()
     
     if not data:
@@ -126,15 +124,14 @@ def ask_question_endpoint():
     return jsonify(result)
 
 
-@ai_bp.route('/api/ai/explain', methods=['POST'])
+@ai_bp.route('/api/ai/explain', methods=['POST', 'OPTIONS'])
 def explain_concept_endpoint():
     """
     Explain a concept
-    
-    JSON body:
-    - concept: The concept to explain
-    - context: Optional context from study material
     """
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     data = request.get_json()
     
     if not data or not data.get('concept'):
@@ -147,15 +144,14 @@ def explain_concept_endpoint():
     return jsonify(result)
 
 
-@ai_bp.route('/api/ai/flashcards', methods=['POST'])
+@ai_bp.route('/api/ai/flashcards', methods=['POST', 'OPTIONS'])
 def generate_flashcards_endpoint():
     """
     Generate flashcards from content
-    
-    JSON body:
-    - content: The study material
-    - count: Number of flashcards (default 10)
     """
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     data = request.get_json()
     
     if not data or not data.get('content'):
@@ -168,15 +164,14 @@ def generate_flashcards_endpoint():
     return jsonify(result)
 
 
-@ai_bp.route('/api/ai/quiz', methods=['POST'])
+@ai_bp.route('/api/ai/quiz', methods=['POST', 'OPTIONS'])
 def generate_quiz_endpoint():
     """
     Generate quiz from content
-    
-    JSON body:
-    - content: The study material
-    - count: Number of questions (default 5)
     """
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     data = request.get_json()
     
     if not data or not data.get('content'):
@@ -195,16 +190,3 @@ def register_ai_routes(app):
     """Register AI routes with the Flask app"""
     app.register_blueprint(ai_bp)
     print("✅ AI routes registered")
-
-
-# ==================== USAGE IN app.py ====================
-"""
-To use these routes, add to your app.py:
-
-from ai_routes import register_ai_routes
-
-# After creating Flask app
-app = Flask(__name__)
-...
-register_ai_routes(app)
-"""
