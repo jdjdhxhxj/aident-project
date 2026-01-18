@@ -30,15 +30,15 @@ genai.configure(api_key=GEMINI_API_KEY)
 # Use gemini-1.5-flash model (works with latest API)
 # If this fails, fall back to gemini-pro
 try:
-    TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')
-    VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')
-    print("Using gemini-1.5-flash model")
+    TEXT_MODEL = genai.GenerativeModel('gemini-1.0-pro')
+    VISION_MODEL = genai.GenerativeModel('gemini-1.0-pro-vision')
+    print("Using gemini-1.0-pro models")
 except Exception as e:
-    print(f"gemini-1.5-flash not available, trying gemini-pro: {e}")
+    print(f"Error with gemini-1.0-pro, trying gemini-pro: {e}")
     try:
         TEXT_MODEL = genai.GenerativeModel('gemini-pro')
         VISION_MODEL = genai.GenerativeModel('gemini-pro-vision')
-        print("Using gemini-pro model")
+        print("Using gemini-pro models")
     except Exception as e2:
         print(f"Error initializing models: {e2}")
         TEXT_MODEL = None
