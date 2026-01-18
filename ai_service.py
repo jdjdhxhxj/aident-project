@@ -17,6 +17,8 @@ import io
 # ==================== CONFIGURATION ====================
 
 # Get API key from environment variable
+# ==================== CONFIGURATION ====================
+
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
@@ -24,26 +26,20 @@ if not GEMINI_API_KEY:
 else:
     print(f"API Key loaded: {GEMINI_API_KEY[:10]}...")
 
-# Configure Gemini
+# Конфігурація
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Use gemini-1.5-flash model (works with latest API)
-# If this fails, fall back to gemini-pro
+# Gemini 1.5 Flash — універсальна модель (текст + фото)
 try:
-    TEXT_MODEL = genai.GenerativeModel('gemini-1.0-pro')
-    VISION_MODEL = genai.GenerativeModel('gemini-1.0-pro-vision')
-    print("Using gemini-1.0-pro models")
+    # Використовуємо одну модель для всього
+    MODEL = genai.GenerativeModel('gemini-1.5-flash')
+    TEXT_MODEL = MODEL
+    VISION_MODEL = MODEL
+    print("Using gemini-1.5-flash for everything")
 except Exception as e:
-    print(f"Error with gemini-1.0-pro, trying gemini-pro: {e}")
-    try:
-        TEXT_MODEL = genai.GenerativeModel('gemini-pro')
-        VISION_MODEL = genai.GenerativeModel('gemini-pro-vision')
-        print("Using gemini-pro models")
-    except Exception as e2:
-        print(f"Error initializing models: {e2}")
-        TEXT_MODEL = None
-        VISION_MODEL = None
-
+    print(f"Error initializing models: {e}")
+    TEXT_MODEL = None
+    VISION_MODEL = None
 
 # ==================== TEXT EXTRACTION ====================
 
