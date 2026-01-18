@@ -21,13 +21,28 @@ GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
     print("WARNING: GEMINI_API_KEY not set!")
+else:
+    print(f"API Key loaded: {GEMINI_API_KEY[:10]}...")
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Models - Updated to latest Gemini models (2024/2025)
-TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')
-VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')
+# Use gemini-1.5-flash model (works with latest API)
+# If this fails, fall back to gemini-pro
+try:
+    TEXT_MODEL = genai.GenerativeModel('gemini-1.5-flash')
+    VISION_MODEL = genai.GenerativeModel('gemini-1.5-flash')
+    print("Using gemini-1.5-flash model")
+except Exception as e:
+    print(f"gemini-1.5-flash not available, trying gemini-pro: {e}")
+    try:
+        TEXT_MODEL = genai.GenerativeModel('gemini-pro')
+        VISION_MODEL = genai.GenerativeModel('gemini-pro-vision')
+        print("Using gemini-pro model")
+    except Exception as e2:
+        print(f"Error initializing models: {e2}")
+        TEXT_MODEL = None
+        VISION_MODEL = None
 
 
 # ==================== TEXT EXTRACTION ====================
@@ -62,6 +77,9 @@ def extract_text_from_docx(file_path):
 def extract_text_from_image(file_path):
     """Extract text from image using Gemini Vision"""
     try:
+        if VISION_MODEL is None:
+            return "Error: AI model not initialized"
+            
         image = Image.open(file_path)
         
         # Convert to RGB if necessary
@@ -77,7 +95,7 @@ def extract_text_from_image(file_path):
         return response.text
     except Exception as e:
         print(f"Error extracting text from image: {e}")
-        return ""
+        return f"Error: {str(e)}"
 
 
 def get_file_content(file_path, file_type):
@@ -103,6 +121,8 @@ def create_compendium(content, goal="understand"):
     """
     Create a study compendium from content using AI
     """
+    if TEXT_MODEL is None:
+        return {"success": False, "error": "AI model not initialized. Check GEMINI_API_KEY."}
     
     prompts = {
         "understand": """
@@ -216,6 +236,9 @@ def create_compendium(content, goal="understand"):
 def create_compendium_from_image(image_path, goal="understand"):
     """Create compendium directly from image (handwritten notes, diagrams, etc.)"""
     
+    if VISION_MODEL is None:
+        return {"success": False, "error": "AI model not initialized. Check GEMINI_API_KEY."}
+    
     prompts = {
         "understand": "Analyze this study material image and create a comprehensive explanation with main concepts, examples, and connections.",
         "summary": "Create a concise summary of the content shown in this image with key points and important terms.",
@@ -260,6 +283,9 @@ def create_compendium_from_image(image_path, goal="understand"):
 
 def ask_question(content, question):
     """Ask a question about the material"""
+    if TEXT_MODEL is None:
+        return {"success": False, "error": "AI model not initialized"}
+        
     prompt = f"""
     Based on this study material:
     ---
@@ -281,6 +307,9 @@ def ask_question(content, question):
 
 def explain_concept(concept, context=""):
     """Explain a specific concept"""
+    if TEXT_MODEL is None:
+        return {"success": False, "error": "AI model not initialized"}
+        
     prompt = f"""
     Explain the concept of "{concept}" in a clear, educational way.
     
@@ -305,6 +334,9 @@ def explain_concept(concept, context=""):
 
 def generate_flashcards(content, count=10):
     """Generate flashcards from content"""
+    if TEXT_MODEL is None:
+        return {"success": False, "error": "AI model not initialized"}
+        
     prompt = f"""
     Create {count} flashcards from this study material:
     ---
@@ -336,6 +368,9 @@ def generate_flashcards(content, count=10):
 
 def generate_quiz(content, question_count=5):
     """Generate a quiz from content"""
+    if TEXT_MODEL is None:
+        return {"success": False, "error": "AI model not initialized"}
+        
     prompt = f"""
     Create a quiz with {question_count} multiple choice questions from this material:
     ---
@@ -386,6 +421,11 @@ def process_material(file_path, file_type, goal="understand"):
         "error": None
     }
     
+    # Check if models are initialized
+    if TEXT_MODEL is None or VISION_MODEL is None:
+        result["error"] = "AI models not initialized. Please check GEMINI_API_KEY environment variable."
+        return result
+    
     try:
         # For images, use vision model directly
         if file_type in ['img', 'image', 'jpg', 'jpeg', 'png', 'heic']:
@@ -429,14 +469,17 @@ def process_material(file_path, file_type, goal="understand"):
 if __name__ == "__main__":
     print("Testing AI Service...")
     print(f"API Key set: {'Yes' if GEMINI_API_KEY else 'No'}")
+    print(f"TEXT_MODEL: {TEXT_MODEL}")
+    print(f"VISION_MODEL: {VISION_MODEL}")
     
-    if GEMINI_API_KEY:
+    if GEMINI_API_KEY and TEXT_MODEL:
         # Test with sample text
         sample_text = """
         Machine Learning is a subset of artificial intelligence that enables systems to learn 
         and improve from experience without being explicitly programmed.
         """
         
+        print("\nTesting compendium creation...")
         result = create_compendium(sample_text, "summary")
         
         if result["success"]:
@@ -445,4 +488,4 @@ if __name__ == "__main__":
         else:
             print("❌ Error:", result["error"])
     else:
-        print("❌ GEMINI_API_KEY not set")
+        print("❌ Cannot test - API key or model not available")
