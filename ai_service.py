@@ -4,6 +4,7 @@ Uses Google Gemini AI (free) to process files and create study materials
 """
 
 import os
+from dotenv import load_dotenv
 import base64
 import json
 import re
@@ -14,12 +15,15 @@ import PyPDF2
 from docx import Document
 import io
 
+# Load the variables from your .env file
+load_dotenv()
+
 # ==================== CONFIGURATION ====================
 
 # Get API key from environment variable
 # ==================== CONFIGURATION ====================
 
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
     print("WARNING: GEMINI_API_KEY not set!")

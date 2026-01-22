@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="hud-background.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyMind - AI Academic Companion</title>
@@ -124,11 +125,10 @@
             min-height: 100vh;
             padding: 20px;
             gap: 20px;
-
-          max-width: 1200px;
-          margin-left: auto;
-          margin-right: auto;
-          width: 100%;
+            max-width: 1250px; /* Трохи розширив для кращого вигляду */
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
         }
 
         /* Sidebar */
@@ -185,7 +185,7 @@
             margin-bottom: 32px;
             border-radius: 16px;
             background: rgba(74, 103, 65, 0.2);
-            border: 1px solid rgba(123, 104, 238, 0.3);
+            border: 1px solid rgba(74, 103, 65, 0.3);
         }
 
         .user-avatar {
@@ -264,7 +264,8 @@
         .nav-item.active {
             background: linear-gradient(135deg, rgba(74, 103, 65, 0.4) 0%, rgba(45, 68, 50, 0.4) 100%);
             color: var(--text-primary);
-            border: 1px solid rgba(123, 104, 238, 0.4);
+            border: 1px solid rgba(129, 199, 132, 0.6);
+            box-shadow: 0 0 15px rgba(74, 103, 65, 0.3);
         }
 
         .nav-item i {
@@ -426,8 +427,8 @@
         }
 
         .stat-icon.purple {
-            background: rgba(74, 103, 65, 0.2);
-            color: #fff;
+            box-shadow: 0 0 15px rgba(74, 103, 65, 0.25);
+            border-color: rgba(74, 103, 65, 0.2);
         }
 
         .stat-icon.teal {
@@ -513,9 +514,10 @@
         }
 
         .action-card:hover {
-            background: rgba(123, 104, 238, 0.15);
-            border-color: rgba(123, 104, 238, 0.3);
+            background: rgba(74, 103, 65, 0.15);
+            border-color: rgba(129, 199, 132, 0.5);
             transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(74, 103, 65, 0.4);
         }
 
         .action-icon {
@@ -1147,31 +1149,31 @@
         }
 
         .notification-panel {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 380px;
-            max-height: calc(100vh - 40px);
-            background: rgba(15, 28, 21, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-20px) scale(0.95);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+           position: fixed;
+           top: 20px;
+           right: 20px;
+           left: auto; /* ВАЖЛИВО: прибираємо прив'язку до лівого краю */
+           width: 380px; /* Фіксована ширина для ноутбука */
+           max-height: calc(100vh - 40px);
+           background: rgba(15, 28, 21, 0.95);
+           backdrop-filter: blur(20px);
+           border: 1px solid rgba(255, 255, 255, 0.1);
+           border-radius: 20px;
+           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+           z-index: 1000;
+           display: flex;
+           flex-direction: column;
+           overflow: hidden;
+           opacity: 0;
+           visibility: hidden;
+           transform: translateX(30px);
+           transition: all 0.3s ease
         }
 
         .notification-panel.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+            transform: translateX(0);
         }
 
         .panel-header {
@@ -1376,6 +1378,207 @@
             color: #d4e09b;
         }
 
+        /* 1. Налаштування самої колонки */
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        /* 2. Загальний стиль карток */
+        .widget-card {
+            background: rgba(10, 20, 15, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(129, 199, 132, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .widget-card:hover {
+            border-color: rgba(129, 199, 132, 0.3);
+            box-shadow: 0 8px 32px rgba(74, 103, 65, 0.2);
+        }
+        .widget-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .widget-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .widget-title i { font-size: 18px; color: var(--primary-light); }
+        .widget-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .widget-badge.live {
+            background: rgba(129, 199, 132, 0.2);
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .widget-badge.live::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        /* 3. Knowledge Pulse (Круги) */
+        .pulse-visualization {
+            height: 140px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, rgba(74, 103, 65, 0.1) 0%, transparent 70%);
+        }
+        .pulse-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(129, 199, 132, 0.3);
+            animation: pulseExpand 3s ease-out infinite;
+        }
+        .pulse-circle:nth-child(1) { width: 60px; height: 60px; animation-delay: 0s; }
+        .pulse-circle:nth-child(2) { width: 100px; height: 100px; animation-delay: 0.5s; }
+        .pulse-circle:nth-child(3) { width: 140px; height: 140px; animation-delay: 1s; }
+        .pulse-circle:nth-child(4) { width: 180px; height: 180px; animation-delay: 1.5s; }
+        
+        @keyframes pulseExpand {
+            0% { transform: scale(0.8); opacity: 0.8; border-color: rgba(129, 199, 132, 0.6); }
+            100% { transform: scale(1.5); opacity: 0; border-color: rgba(129, 199, 132, 0); }
+        }
+        
+        .pulse-core {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(129, 199, 132, 0.5);
+            animation: coreGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes coreGlow {
+            0% { box-shadow: 0 0 20px rgba(129, 199, 132, 0.4); }
+            100% { box-shadow: 0 0 40px rgba(129, 199, 132, 0.7); }
+        }
+        .pulse-core i { font-size: 22px; color: #fff; }
+
+        .pulse-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px 20px; }
+        .pulse-stat { text-align: center; padding: 12px 8px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .pulse-stat-value { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+        .pulse-stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; }
+
+        .knowledge-areas { padding: 0 20px 16px; }
+        .knowledge-area { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .area-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .area-icon.math { background: rgba(100, 181, 246, 0.2); color: #64b5f6; }
+        .area-icon.code { background: rgba(212, 224, 155, 0.2); color: var(--accent); }
+        .area-icon.science { background: rgba(129, 199, 132, 0.2); color: var(--success); }
+        .area-info { flex: 1; min-width: 0; }
+        .area-name { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+        .area-progress { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; }
+        .area-progress-fill { height: 100%; border-radius: 2px; }
+        .area-progress-fill.math { background: linear-gradient(90deg, #64b5f6 0%, #42a5f5 100%); }
+        .area-progress-fill.code { background: linear-gradient(90deg, var(--accent) 0%, #c5d38a 100%); }
+        .area-progress-fill.science { background: linear-gradient(90deg, var(--success) 0%, #66bb6a 100%); }
+        .area-percent { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+
+        /* 4. AI Widget Styles */
+        .ai-assistant-widget { background: linear-gradient(135deg, rgba(74, 103, 65, 0.3) 0%, rgba(10, 20, 15, 0.8) 100%); }
+        .ai-chat-preview { padding: 16px 20px; }
+        .ai-message { display: flex; gap: 12px; }
+        .ai-avatar { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .ai-avatar.bot { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); }
+        .ai-avatar.bot i { font-size: 16px; color: #fff; }
+        .ai-bubble { flex: 1; padding: 10px 14px; border-radius: 12px; font-size: 12px; line-height: 1.5; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(129, 199, 132, 0.2); }
+        .ai-suggestions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 16px; }
+        .ai-suggestion { padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(129, 199, 132, 0.2); border-radius: 20px; font-size: 11px; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
+        .ai-suggestion:hover { background: rgba(74, 103, 65, 0.3); border-color: rgba(129, 199, 132, 0.4); color: var(--text-primary); }
+        .ai-input-container { padding: 12px 20px 16px; }
+        .ai-input-wrapper { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(129, 199, 132, 0.2); border-radius: 14px; }
+        .ai-input-wrapper input { flex: 1; background: none; border: none; outline: none; color: var(--text-primary); font-size: 13px; }
+        .ai-send-btn { width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .ai-send-btn i { font-size: 16px; color: #fff; }
+
+        .content-grid {
+           display: grid !important;
+           /* Ліва частина розтягується (1fr), Права фіксована (360px) */
+           grid-template-columns: 1fr 360px !important; 
+           gap: 40px !important;
+           align-items: start !important; /* Щоб все починалося з верхнього краю */
+           width: 100% !important;
+           padding-right: 20px !important;
+        }
+
+        /* 1. Зменшуємо відступи в заголовку */
+        .ai-assistant-widget .widget-header {
+            padding: 12px 16px; 
+        }
+
+        /* 2. Зменшуємо відступи навколо повідомлення */
+        .ai-chat-preview {
+            padding: 10px 16px;
+        }
+
+        /* 3. Робимо бульбашку з текстом меншою */
+        .ai-bubble {
+            padding: 8px 12px;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        /* 4. Зменшуємо кнопки-підказки (Suggestions) */
+        .ai-suggestions {
+            padding: 0 16px 10px;
+            gap: 6px;
+        }
+        .ai-suggestion {
+            padding: 4px 10px;
+            font-size: 10px;
+        }
+
+        /* 5. Зменшуємо поле вводу */
+        .ai-input-container {
+            padding: 0 16px 14px;
+        }
+        .ai-input-wrapper {
+            padding: 6px 10px;
+            min-height: 36px; /* Робимо сам рядок вводу вужчим */
+        }
+        .ai-input-wrapper input {
+            font-size: 12px;
+        }
+        .ai-send-btn {
+            width: 28px;
+            height: 28px;
+        }
+        .ai-assistant-widget {
+            margin-top: 40px !important;
+        }
+
         /* Mobile Styles */
         @media (max-width: 1400px) {
             .content-grid {
@@ -1395,7 +1598,209 @@
             .actions-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .sidebar-right {
+                display: none !important;
+            }
+
+            /* 2. Ховаємо конкретно віджет Neural Net (на випадок, якщо він не в сайдбарі) */
+            .nexus-widget {
+                display: none !important;
+            }
+
+            /* 3. Ховаємо віджет Терміналу */
+            .terminal-widget {
+                display: none !important;
+            }
+
+            /* 4. Розтягуємо основний контент на всю ширину, щоб не було дірки справа */
+            .content-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
+        @media (min-width: 901px) {
+            /* 1. ПАНЕЛЬ: Акуратне вікно праворуч */
+    
+        .notification-panel {
+        position: fixed !important;
+        top: 85px !important;      /* Відступ під шапкою */
+        right: 20px !important;     /* Притискаємо вправо */
+        left: auto !important;      /* ВАЖЛИВО: скасовуємо ліву прив'язку */
+        
+        width: 380px !important;    /* Фіксована ширина, щоб не було широко */
+        height: auto !important;
+        max-height: 80vh !important;
+        
+        background: rgba(15, 28, 21, 0.98) !important;
+        backdrop-filter: blur(25px) !important;
+        border: 1px solid rgba(129, 199, 132, 0.2) !important;
+        border-radius: 24px !important;
+        box-shadow: -15px 15px 50px rgba(0, 0, 0, 0.6) !important;
+        
+        /* Ховаємо за правий край для анімації */
+        transform: translateX(450px) !important; 
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27) !important;
+        display: flex !important;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .notification-panel.active {
+        transform: translateX(0) !important;
+        opacity: 1;
+        visibility: visible;
+    }
+       
+    }
+
+    /* Коли активна (клас .active) */
+    .notification-panel.active {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* 2. ЕЛЕМЕНТИ СПИСКУ: Щоб не розтягували панель */
+    .notif-item {
+        width: auto !important;
+        margin: 8px 15px !important;
+        padding: 15px !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        gap: 12px !important;
+    }
+
+    /* 3. ОВЕРЛЕЙ: Вимикаємо на десктопі, щоб можна було клікати по сайту */
+    .notification-overlay {
+        display: none !important;
+    }
+
+    /* Стилізація заголовка панелі */
+    .panel-header {
+        padding: 20px 25px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    /* 1. Центруємо все по середині екрана */
+    .app-container {
+        max-width: 1200px;
+        margin: 0 auto !important; /* Центрування */
+        display: flex;
+    }
+
+    /* 2. Шапка стає коротким "острівцем" зліва */
+   .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Розштовхує текст і пошук по краях */
+        gap: 30px !important;            /* Створює залізну дистанцію в 30px, щоб вони не торкалися */
+        width: 80%;
+        padding: 15px 25px;
+    }
+
+    /* 2. Налаштування текстового блоку */
+    .header-left {
+        flex: 1;             /* Дозволяє тексту займати вільне місце */
+        min-width: 0;        /* Важливо: не дає блоку вилазити за межі */
+    }
+
+    .header-left p {
+        font-size: 13px;
+        white-space: nowrap;  /* Тримає текст в один рядок */
+        overflow: hidden;     /* Ховає те, що не влазить */
+        text-overflow: ellipsis; /* Додає "...", якщо екран замалий, замість накладання */
+    }
+
+   .search-box {
+        width: 210px !important; /* Регулюйте це число (160-200px), щоб знайти ідеал */
+        height: 40px !important;  /* Робимо його трохи компактнішим по висоті */
+        padding: 0 12px !important; /* Зменшуємо бокові відступи всередині */
+        gap: 10px !important;       /* Відстань між іконкою лупи та текстом */
+    }
+
+    /* Налаштовуємо текст, щоб він не "виступав" */
+    .search-box input {
+        font-size: 10px !important; /* Менший шрифт краще виглядає у вузькому полі */
+        width: 100% !important;
+    }
+
+    .content-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Тримаємо початок зверху */
+        gap: 0 !important;
+    }
+
+    /* 2. Налаштовуємо самі віджети статистики */
+    .stats-grid {
+       display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        
+        /* ЦЕ ВИПРАВИТЬ РІВЕНЬ: */
+        align-items: start; /* Притискає всі картки до верхнього краю сітки */
+        
+        margin-top: 30px !important; 
+        margin-bottom: 38px !important;
+        width: 100%;
+    }
+    .stat-card {
+        margin: 0 !important; 
+        height: 100%; /* Робить їх однаковими за висотою, якщо контенту різна кількість */
+    }
+
+    .materials-section {
+        min-height: 300px !important; /* Збільшуємо загальну мінімальну висоту острова */
+        padding: 32px !important;     /* Більше простору від краю острова до контенту */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 2. ВІДСТУП МІЖ ВНУТРІШНІМИ ОСТРОВЦЯМИ (РЯДКАМИ) */
+    .materials-section .materials-list {
+        margin-top: 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        /* Ставимо 30px для виразної відстані */
+        gap: 11px !important; 
+        width: 100% !important;
+    }
+    
+
+    /* 3. РОБИМО КОЖЕН РЯДОК (МАТЕРІАЛ) ТОВСТІШИМ */
+    .material-item {
+        padding: 22px 24px !important; /* Збільшуємо висоту кожного рядка */
+        border-radius: 18px !important; /* Робимо їх трохи круглішими для стилю */
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Ефект при наведенні (необов'язково, але круто виглядає) */
+    .material-item:hover {
+        transform: translateX(10px); /* Легке зміщення вправо при наведенні */
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* 4. МАСШТАБУЄМО ІКОНКИ ТА ТЕКСТ ВСЕРЕДИНІ */
+    .material-icon {
+        width: 52px !important;
+        height: 52px !important;
+        font-size: 22px !important;
+    }
+
+    .material-name {
+        font-size: 16px !important; /* Робимо назву файлу чіткішою */
+        margin-bottom: 6px !important;
+    }
+
+    .material-meta {
+        font-size: 13px !important;
+    }
+
+    /* 3. Опускаємо статистику/графіки нижче */
+    .progress-content, .content-grid {
+        margin-top: 0px !important; 
+    }
+    
+
 
         @media (max-width: 900px) {
             .sidebar {
@@ -1805,71 +2210,23 @@
 
             /* Notification Panel Mobile */
             .notification-panel {
-                top: 8px !important;
-                right: 8px !important;
-                left: 8px !important;
-                width: auto !important;
-                max-height: calc(100vh - 16px) !important;
-                border-radius: 16px !important;
-            }
+        top: 8px !important;
+        right: 8px !important;
+        left: 8px !important;
+        width: auto !important; /* На мобілці це ок, бо екран вузький */
+        max-height: calc(100vh - 16px) !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Ваші налаштування шрифтів для мобілки */
+    .panel-header { padding: 14px !important; }
+    .panel-title h3 { font-size: 14px !important; }
+    .notif-item { padding: 10px !important; margin-bottom: 6px !important; }
+    .notif-title { font-size: 11px !important; }
+    .notif-text { font-size: 10px !important; }
 
-            .panel-header {
-                padding: 14px !important;
-            }
-
-            .panel-title h3 {
-                font-size: 14px !important;
-            }
-
-            .panel-title .count {
-                font-size: 10px !important;
-                padding: 2px 6px !important;
-            }
-
-            .panel-body {
-                max-height: 320px !important;
-                padding: 8px !important;
-            }
-
-            .notif-item {
-                padding: 10px !important;
-                margin-bottom: 6px !important;
-                border-radius: 10px !important;
-            }
-
-            .notif-icon {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 14px !important;
-                border-radius: 8px !important;
-            }
-
-            .notif-title {
-                font-size: 11px !important;
-            }
-
-            .notif-text {
-                font-size: 10px !important;
-                margin-bottom: 4px !important;
-            }
-
-            .notif-time {
-                font-size: 9px !important;
-            }
-
-            .section-divider {
-                font-size: 9px !important;
-                padding: 8px 10px 6px !important;
-            }
-
-            .panel-footer {
-                padding: 10px 14px !important;
-            }
-
-            .view-all-btn {
-                font-size: 12px !important;
-            }
-        
 
         /* Extra small screens (iPhone SE, etc.) */
         @media (max-width: 375px) {
@@ -2174,8 +2531,10 @@
     /* Фіолетовий/Зелений */
     .stat-icon.purple {
         /* box-shadow: зменшено прозорість з 0.4 до 0.25 і радіус до 15px */
-        box-shadow: 0 0 15px rgba(123, 104, 238, 0.25);
-        border-color: rgba(123, 104, 238, 0.2);
+        background: rgba(74, 103, 65, 0.2);
+        color: #fff;
+        box-shadow: 0 0 15px rgba(121, 158, 112, 0.4);
+        border: 1px solid rgba(121, 158, 112, 0.3);
     }
     /* text-shadow: зменшено радіус з 8px до 5px */
     .stat-icon.purple i { text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); }
@@ -2237,15 +2596,174 @@
         border: 1px solid rgba(76, 175, 80, 0.2);
     }
     .material-icon.img i { text-shadow: 0 0 6px rgba(76, 175, 80, 0.8); }
+    .nexus-widget {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 20, 15, 0.6);
+            border: 1px solid rgba(129, 199, 132, 0.2);
+            min-height: 260px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .nexus-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nexus-title {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-light);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nexus-status {
+            font-size: 9px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .nexus-body {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(74, 103, 65, 0.1) 0%, transparent 80%);
+        }
+
+        #nexusCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .nexus-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Щоб кліки проходили крізь текст */
+        }
+
+        .nexus-label {
+            position: absolute;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(129, 199, 132, 0.3);
+            backdrop-filter: blur(2px);
+            transform: translate(-50%, -50%);
+        }
+
+        .nexus-footer {
+            padding: 10px 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .nexus-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .n-val { font-size: 12px; font-weight: 700; color: #fff; }
+        .n-lbl { font-size: 8px; color: var(--text-tertiary); letter-spacing: 1px; margin-top: 2px; }
+        
+
     </style>
 </head>
 <body>
+    <!-- 
+  HUD BACKGROUND ELEMENTS
+  
+  INSTRUCTIONS:
+  1. Copy everything below this comment
+  2. Paste it RIGHT AFTER your <body> tag in menu.html
+  3. Add class "hud-enabled" to your <body> tag: <body class="hud-enabled">
+  4. Link the CSS file in <head>: <link rel="stylesheet" href="hud-background.css">
+  
+  That's it! No other changes needed.
+-->
+
+<!-- HUD Technical Background (Desktop Only) -->
+<div class="hud-background">
+    <!-- Grid -->
+    <div class="hud-grid"></div>
+    
+    <!-- Circles -->
+    <div class="hud-circle hud-circle-1"></div>
+    <div class="hud-circle hud-circle-2"></div>
+    <div class="hud-circle hud-circle-3"></div>
+    <div class="hud-circle hud-circle-4"></div>
+    
+    <!-- Corner Brackets -->
+    <div class="hud-corner hud-corner-tl"></div>
+    <div class="hud-corner hud-corner-tr"></div>
+    <div class="hud-corner hud-corner-bl"></div>
+    <div class="hud-corner hud-corner-br"></div>
+    
+    <!-- Tech Lines -->
+    <div class="hud-line hud-line-1"></div>
+    <div class="hud-line hud-line-2"></div>
+    <div class="hud-line hud-line-3"></div>
+    
+    <!-- Data Points -->
+    <div class="hud-point hud-point-1"></div>
+    <div class="hud-point hud-point-2"></div>
+    <div class="hud-point hud-point-3"></div>
+    <div class="hud-point hud-point-4"></div>
+    
+    <!-- Hexagons -->
+    <div class="hud-hex hud-hex-1"></div>
+    <div class="hud-hex hud-hex-2"></div>
+    
+    <!-- Scan Line -->
+    <div class="hud-scanline"></div>
+    
+    <!-- Text Elements -->
+    <div class="hud-text hud-text-1">SYS:ACTIVE</div>
+    <div class="hud-text hud-text-2">DATA:STREAM</div>
+    <div class="hud-text hud-text-3">AI:READY</div>
+    
+    <!-- Arcs -->
+    <div class="hud-arc hud-arc-1"></div>
+    <div class="hud-arc hud-arc-2"></div>
+</div>
+
+
     <!-- Background Animation -->
     <div class="bg-animation">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
+
+    
 
     <div class="app-container">
         <!-- Sidebar -->
@@ -2314,7 +2832,40 @@
                     </li>
                 </ul>
             </nav>
+            <div class="glass nexus-widget animate-in delay-3">
+                    <div class="nexus-header">
+                        <div class="nexus-title">
+                            <i class="ri-share-line"></i> NEURAL_NET
+                        </div>
+                        <div class="nexus-status">
+                            <span class="status-dot"></span> LIVE
+                        </div>
+                    </div>
+                    
+                    <div class="nexus-body">
+                        <canvas id="nexusCanvas"></canvas>
+                        
+                        <div class="nexus-labels">
+                            <span class="nexus-label" style="top: 20%; left: 20%">Logic</span>
+                            <span class="nexus-label" style="top: 50%; left: 50%">Core</span>
+                            <span class="nexus-label" style="top: 70%; left: 80%">Data</span>
+                        </div>
+                    </div>
+
+                    <div class="nexus-footer">
+                        <div class="nexus-stat">
+                            <span class="n-val">Active</span>
+                            <span class="n-lbl">STATUS</span>
+                        </div>
+                        <div class="nexus-stat">
+                            <span class="n-val">24ms</span>
+                            <span class="n-lbl">LATENCY</span>
+                        </div>
+                    </div>
+                </div>
         </aside>
+
+        
 
         <!-- Main Content -->
         <main class="main-content">
@@ -2338,6 +2889,8 @@
                     </div>
                 </div>
             </header>
+
+            
 
             <!-- Content Grid -->
             <div class="content-grid">
@@ -2385,8 +2938,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Recent Materials -->
+                    
+                   <!-- Recent Materials -->
                     <div class="materials-section glass">
                         <div class="section-header">
                             <h3 class="section-title">Recent Materials</h3>
@@ -2453,10 +3006,96 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </main>
-    </div>
+                       <div class="widget-card ai-assistant-widget animate-in delay-3">
+                        <div class="widget-header">
+                            <div class="widget-title"><i class="ri-robot-line"></i>AI Assistant</div>
+                            <span class="widget-badge live">Online</span>
+                        </div>
+                        <div class="ai-chat-preview">
+                            <div class="ai-message">
+                                <div class="ai-avatar bot"><i class="ri-robot-line"></i></div>
+                                <div class="ai-bubble bot">Hi! I can help you study smarter. What topic would you like to explore?</div>
+                            </div>
+                        </div>
+                        <div class="ai-suggestions">
+                            <span class="ai-suggestion">Explain concepts</span>
+                            <span class="ai-suggestion">Quiz me</span>
+                            <span class="ai-suggestion">Summarize</span>
+                        </div>
+                        <div class="ai-input-container">
+                            <div class="ai-input-wrapper">
+                                <input type="text" placeholder="Ask me anything...">
+                                <button class="ai-send-btn"><i class="ri-send-plane-fill"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    </div> <div class="sidebar-right">
+                    
+                    <div class="widget-card knowledge-pulse-widget animate-in delay-1">
+                        <div class="widget-header">
+                            <div class="widget-title"><i class="ri-pulse-line"></i>Knowledge Pulse</div>
+                            <span class="widget-badge live">Active</span>
+                        </div>
+                        <div class="pulse-visualization">
+                            <div class="pulse-circle"></div><div class="pulse-circle"></div><div class="pulse-circle"></div><div class="pulse-circle"></div>
+                            <div class="pulse-core"><i class="ri-brain-line"></i></div>
+                        </div>
+                        <div class="pulse-stats">
+                            <div class="pulse-stat"><div class="pulse-stat-value highlight">94%</div><div class="pulse-stat-label">Retention</div></div>
+                            <div class="pulse-stat"><div class="pulse-stat-value">2.4k</div><div class="pulse-stat-label">Concepts</div></div>
+                            <div class="pulse-stat"><div class="pulse-stat-value highlight">A+</div><div class="pulse-stat-label">Grade</div></div>
+                        </div>
+                        <div class="knowledge-areas">
+                            <div class="knowledge-area">
+                                <div class="area-icon math"><i class="ri-calculator-line"></i></div>
+                                <div class="area-info"><div class="area-name">Mathematics</div><div class="area-progress"><div class="area-progress-fill math" style="width: 85%"></div></div></div>
+                                <span class="area-percent">85%</span>
+                            </div>
+                            <div class="knowledge-area">
+                                <div class="area-icon code"><i class="ri-code-s-slash-line"></i></div>
+                                <div class="area-info"><div class="area-name">Programming</div><div class="area-progress"><div class="area-progress-fill code" style="width: 92%"></div></div></div>
+                                <span class="area-percent">92%</span>
+                            </div>
+                            <div class="knowledge-area">
+                                <div class="area-icon science"><i class="ri-flask-line"></i></div>
+                                <div class="area-info"><div class="area-name">Science</div><div class="area-progress"><div class="area-progress-fill science" style="width: 78%"></div></div></div>
+                                <span class="area-percent">78%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-card study-plan-card animate-in delay-2">
+                        <div class="widget-header">
+                            <div class="widget-title"><i class="ri-calendar-todo-line"></i>Today's Plan</div>
+                            <span class="widget-badge" style="color: var(--warning);">4 left</span>
+                        </div>
+                        <div class="plan-progress">
+                            <div class="progress-info"><span>Daily Progress</span><span>3/7 tasks</span></div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 43%"></div></div>
+                        </div>
+                        <div class="tasks-list">
+                            <div class="task-item completed" onclick="toggleTask(this)">
+                                <div class="task-checkbox checked"><i class="ri-check-line"></i></div>
+                                <div class="task-content"><div class="task-title">Review ML Chapter 5</div><div class="task-time">9:30 AM</div></div>
+                            </div>
+                            <div class="task-item completed" onclick="toggleTask(this)">
+                                <div class="task-checkbox checked"><i class="ri-check-line"></i></div>
+                                <div class="task-content"><div class="task-title">Practice coding</div><div class="task-time">11:15 AM</div></div>
+                            </div>
+                            <div class="task-item" onclick="toggleTask(this)">
+                                <div class="task-checkbox"><i class="ri-check-line"></i></div>
+                                <div class="task-content"><div class="task-title">Statistics quiz prep</div><div class="task-time">3:00 PM</div></div>
+                                <div class="task-priority high"></div>
+                            </div>
+                            <div class="task-item" onclick="toggleTask(this)">
+                                <div class="task-checkbox"><i class="ri-check-line"></i></div>
+                                <div class="task-content"><div class="task-title">Read research paper</div><div class="task-time">6:00 PM</div></div>
+                                <div class="task-priority medium"></div>
+                            </div>
+                        </div>
+                    </div>
+
 
     <!-- Notification Overlay -->
     <div class="notification-overlay" id="notifOverlay" onclick="closeNotificationPanel()"></div>
@@ -2589,6 +3228,7 @@
             </div>
         </div>
     </nav>
+    
 
     <!-- Upload Modal -->
     <div class="modal-overlay" id="uploadModal">
@@ -2629,6 +3269,8 @@
             <input type="file" id="fileInput" hidden multiple accept=".pdf,.docx,.pptx,.doc,.ppt,.jpg,.jpeg,.png,.heic">
         </div>
     </div>
+
+    
 
     <!-- Goal Selection Modal -->
     <div class="modal-overlay" id="goalModal">
@@ -2686,6 +3328,8 @@
             <button class="btn-primary">Continue with AI</button>
         </div>
     </div>
+
+    
 
     <script>
         function smoothTransition(url) {
@@ -2923,6 +3567,160 @@
         if (("standalone" in window.navigator) && window.navigator.standalone) {
         // ... (весь той код, що був тут) ...
     }
+    (function initNexus() {
+            const canvas = document.getElementById('nexusCanvas');
+            // Перевіряємо, чи існує канвас (щоб не було помилок)
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            let particles = [];
+            
+            // Налаштування частинок
+            const particleCount = 35; // Кількість точок
+            const connectionDistance = 90; // Дистанція з'єднання
+            const speed = 0.4; // Швидкість руху
+
+            // Клас частинки
+            class Node {
+                constructor() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.vx = (Math.random() - 0.5) * speed;
+                    this.vy = (Math.random() - 0.5) * speed;
+                    this.size = Math.random() * 1.5 + 1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Відбивання від стінок
+                    if (this.x < 0 || this.x > w) this.vx *= -1;
+                    if (this.y < 0 || this.y > h) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = '#81c784'; // Green dots
+                    ctx.fill();
+                }
+            }
+
+            // Зміна розміру
+            function resize() {
+                const parent = canvas.parentElement;
+                if(parent) {
+                    w = parent.clientWidth;
+                    h = parent.clientHeight;
+                    canvas.width = w;
+                    canvas.height = h;
+                    
+                    // Перезапускаємо частинки при зміні розміру
+                    particles = [];
+                    for(let i = 0; i < particleCount; i++) {
+                        particles.push(new Node());
+                    }
+                }
+            }
+
+            // Головний цикл анімації
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                
+                // Оновлюємо та малюємо частинки
+                for (let i = 0; i < particles.length; i++) {
+                    let p1 = particles[i];
+                    p1.update();
+                    p1.draw();
+
+                    // Малюємо лінії
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p1.x - p2.x;
+                        let dy = p1.y - p2.y;
+                        let dist = Math.sqrt(dx*dx + dy*dy);
+
+                        if (dist < connectionDistance) {
+                            ctx.beginPath();
+                            // Прозорість лінії залежить від дистанції
+                            let alpha = 1 - (dist / connectionDistance);
+                            ctx.strokeStyle = `rgba(129, 199, 132, ${alpha * 0.4})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+
+            // Запуск
+            window.addEventListener('resize', resize);
+            // Невелика затримка, щоб DOM точно завантажився
+            setTimeout(() => {
+                resize();
+                animate();
+            }, 100);
+        })();
+
+        // 1. Логіка для списку завдань (Today's Plan)
+    function toggleTask(element) {
+        // Перемикаємо клас completed (закреслює текст)
+        element.classList.toggle('completed');
+        
+        // Знаходимо чекбокс всередині і перемикаємо його вигляд
+        const checkbox = element.querySelector('.task-checkbox');
+        if (checkbox) {
+            checkbox.classList.toggle('checked');
+        }
+        
+        // Оновлюємо прогрес-бар
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const totalTasks = document.querySelectorAll('.task-item').length;
+        const completedTasks = document.querySelectorAll('.task-item.completed').length;
+        const percent = (completedTasks / totalTasks) * 100;
+        
+        // Оновлюємо смужку
+        document.querySelector('.progress-fill').style.width = percent + '%';
+        
+        // Оновлюємо текст
+        const progressText = document.querySelector('.progress-info span:last-child');
+        if(progressText) progressText.innerText = `${completedTasks}/${totalTasks} tasks`;
+    }
+
+    // 2. Логіка для AI Assistant (підказки)
+    document.querySelectorAll('.ai-suggestion').forEach(suggestion => {
+        suggestion.addEventListener('click', function() {
+            // Знаходимо поле вводу
+            const input = document.querySelector('.ai-input-wrapper input');
+            // Вставляємо текст з кнопки в поле
+            input.value = this.innerText;
+            // Ставимо фокус на поле
+            input.focus();
+        });
+    });
+
+    // 3. Анімація для Knowledge Pulse (щоб цифри гарно з'являлися)
+    document.addEventListener('DOMContentLoaded', () => {
+        const stats = document.querySelectorAll('.pulse-stat-value');
+        stats.forEach(stat => {
+            stat.style.opacity = '0';
+            stat.style.transform = 'translateY(10px)';
+            stat.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                stat.style.opacity = '1';
+                stat.style.transform = 'translateY(0)';
+            }, 500);
+        });
+    });
+
     </script>
 </body>
 </html>
